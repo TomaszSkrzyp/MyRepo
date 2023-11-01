@@ -36,13 +36,11 @@ int main(int argc,char*argv[]){
             output_file=argv[i+1];
             i++;
         }
-       
-        else   if(a=="-k"){
+       else   if(a=="-k"){
                std::istringstream iss(argv[i+1]);
                if ((iss>>k)&& iss.eof()){
                     //the number is right
-               }
-                i++;
+               } i++;
             }
         else if (a=="-d"){
             std::istringstream iss(argv[i+1]);
@@ -52,13 +50,10 @@ int main(int argc,char*argv[]){
             i++;
         }
     }
-
-    
     std::vector<std::vector<int>> vector;
-    std::ifstream input("dataset.txt");
-    std::ofstream output("liczby.txt");
+    std::ifstream input(input_file);
     create_vector_with_points(vector,input);
-    std::cout<<vector[0].size();
+   
     return 0;
 }
     
