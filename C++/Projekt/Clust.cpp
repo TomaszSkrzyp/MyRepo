@@ -3,29 +3,23 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
-void create_vector_of_objects(std::ifstream& input,std::vector<std::vector<int>>& vec,int ile_pkt,int d){
+void create_vector_with_points(std::vector<std::vector<int>>& vv,std::ifstream& input_file){
+    //C++\Projekt\Clust.exe -i dataset.txt -o liczby.txt -k 10 -d 3
+    
     std::string line;
-    int i=0;
-    while(std::getline(input,line)){
-        std::istringstream iss(line);
-        std::vector<int> vec2;
-        int a;
-        while(iss>>a){
-            vec2.push_back(a);
-        }
-        vec.push_back(vec2);
-        i++;
-    }
-    if(i!=ile_pkt){
-        std::cout<<"Wrong number of points";
-    }
-    for(int i=0;i<ile_pkt;i++){
-        if(vec[i].size()!=d){
-            std::cout<<"Wrong number of dimensions";
-        }
-    }
+    while(std::getline(input_file, line))
+        {
+    std::stringstream ss(line);
+    int i;
+    std::vector<int> v;
+    while( ss >> i ){ 
+        std::cout<<i<<"\n";
+       v.push_back(i);}
+    vv.push_back(v);
 }
+    
+}
+    
     
 
 int main(int argc,char*argv[]){
@@ -48,37 +42,33 @@ int main(int argc,char*argv[]){
                if ((iss>>k)&& iss.eof()){
                     //the number is right
                }
+                i++;
             }
         else if (a=="-d"){
             std::istringstream iss(argv[i+1]);
             if ((iss>>d)&& iss.eof()){
                     //the number is right
                }
+            i++;
         }
-
-
     }
 
-    std::ifstream input(input_file);
-    std::ofstream output(output_file);
-    std::cout<<7;
-
     
-    
-    int ile_pkt =20;
-    std::vector<std::vector<int>>vec;
-    create_vector_of_objects(input,vec,ile_pkt,d);
-    for(int i=0;i<ile_pkt;i++){
-        for(int j=0;j<d;j++){
-            output<<vec[i][j]<<" ";
-        }
-        output<<"\n";
-    }
-    
-    
-    
+    std::vector<std::vector<int>> vector;
+    std::ifstream input("dataset.txt");
+    std::ofstream output("liczby.txt");
+    create_vector_with_points(vector,input);
+    std::cout<<vector[0].size();
     return 0;
+}
+    
     
 
+    
+    
+    
+   
+    
+    
+    
 
-}
