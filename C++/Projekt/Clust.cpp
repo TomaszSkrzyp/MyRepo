@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
+/// @brief ta funkcja jest g
+int global=17;
 void create_vector_with_points(std::vector<std::vector<int>>& vv,std::ifstream& input_file){
     //C++\Projekt\Clust.exe -i dataset.txt -o liczby.txt -k 10 -d 3
     
@@ -53,7 +55,10 @@ int main(int argc,char*argv[]){
     std::vector<std::vector<int>> vector;
     std::ifstream input(input_file);
     create_vector_with_points(vector,input);
-   
+    ///document entity
+    /// i love doxygen
+
+   int entity;
     return 0;
 }
     
