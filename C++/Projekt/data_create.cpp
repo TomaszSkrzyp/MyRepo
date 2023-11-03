@@ -9,7 +9,7 @@ void vec(std::vector<int>& vector,int size,int d){
     static Dist uid{};
     for (int i = 0; i < size; i++){
         /*vector.push_back(uid(re, Dist::param_type{ 0,100 }));*/   
-        vector.push_back(i);
+        vector.push_back((double)i);
        
 }
 }
