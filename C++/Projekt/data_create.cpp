@@ -9,16 +9,11 @@ void vec(std::vector<int>& vector,int size,int d){
     static Dist uid{};
     for (int i = 0; i < size; i++){
         /*vector.push_back(uid(re, Dist::param_type{ 0,100 }));*/   
-        vector.push_back(i);
+        vector.push_back((double)i);
        
 }
 }
-        
-
-
-int main(){
-    int d=3;
-    int ile_pkt=20;
+void create(int ile_pkt,int d){
     std::vector<int> data;
     vec(data,d*ile_pkt,d);
     std::ofstream dataset;
@@ -32,6 +27,10 @@ int main(){
     }
     dataset.close();
     
-    return 0;   
+     
+}
+int main(){
+    create(50,3);
+    return 0;
 }
     
