@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "inb2win.h"
+
 
 /// @brief ta funkcja jest g
 
@@ -26,7 +28,7 @@ std::vector<Point> create_vector(std::ifstream& input_file){
     ///problem z przekazaniem
 
     //C++\Projekt\Clust.exe -i dataset.txt -o liczby.txt -k 10 -d 3
-    
+ 
     
 
 struct Point{///@brief struktura punktu 
@@ -52,6 +54,7 @@ struct Point{///@brief struktura punktu
     
 
 int main(int argc,char*argv[]){
+    create_vec(n, m);
     struct Point{///@brief struktura punktu 
     std::vector<double> coordinates; 
     int cluster; 
@@ -91,13 +94,13 @@ int main(int argc,char*argv[]){
        else   if(a=="-k"){
                std::istringstream iss(argv[i+1]);
                if ((iss>>k)&& iss.eof()){
-                    ///the number is right
+                    ///numer jest git
                } i++;
             }
         else if (a=="-d"){
             std::istringstream iss(argv[i+1]);
             if ((iss>>d)&& iss.eof()){
-                    ///the number is right
+                    ///numer jest git
                }
             i++;
         }

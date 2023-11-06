@@ -3,6 +3,7 @@
 #include<string>
 #include<vector>
 #include<random>
+#include "inb2win.h"
 void vec(std::vector<int>& vector,int size,int d){
     static std::default_random_engine re{ std::random_device{}() };
     using Dist = std::uniform_int_distribution<int>;
@@ -29,8 +30,8 @@ void create(int ile_pkt,int d){
     
      
 }
-int main(){
-    create(50,3);
+int main_vec(int n,int m){
+    create(n,m);
     return 0;
 }
     
