@@ -6,7 +6,7 @@
 
 /// @brief ta funkcja jest g
 
-/*std::vector<Point> create_vector(std::ifstream& input_file){
+std::vector<Point> create_vector(std::ifstream& input_file){
     std::vector<Point> vv;
     std::string line;
     while(std::getline(input_file, line))
@@ -22,7 +22,7 @@
     }
 
     return vv;
-    }*/
+    }
     ///problem z przekazaniem
 
     //C++\Projekt\Clust.exe -i dataset.txt -o liczby.txt -k 10 -d 3
@@ -107,7 +107,7 @@ int main(int argc,char*argv[]){
     
     ///document entity
     /// i love doxygen
-    std::vector<Point> Points;
+    /*std::vector<Point> Points;
     std::string line;
     while(std::getline(input, line))
     {
@@ -118,8 +118,8 @@ int main(int argc,char*argv[]){
             v.push_back(i);
         }
         Points.push_back(Point(v));
-    }
-    /*std::vector<Point> Points=create_vector(input);*/
+    }*/
+    std::vector<Point> Points=create_vector(input);
    
     Point p0=Point({1.0,2.0,3.0});
     std::cout<<Points[4].distance(p0);
