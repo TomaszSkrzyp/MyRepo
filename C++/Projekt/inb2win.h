@@ -1,14 +1,10 @@
-<<<<<< < HEAD
-#ifndef PLAYER_H
-#define PLAYER_H
-#include<fstream>
-#include<iostream>
-#include<string>
+#ifndef INB2WIN_H
+#define INB2WIN_H
+#include <iostream>
+#include <string>
 #include<vector>
 #include<random>
-int main_vec();
-void vec();
-void create();
 
-=======
+void create_data(int ile_pkt,int d);
+
 #endif
