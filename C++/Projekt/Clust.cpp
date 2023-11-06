@@ -103,7 +103,7 @@ int main(int argc,char*argv[]){
         }
     }
     
-    std::ifstream input(input_file);
+    std::istream input(input_file);
     
     ///document entity
     /// i love doxygen
