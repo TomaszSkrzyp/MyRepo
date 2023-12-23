@@ -1,0 +1,67 @@
+\doxysection{FInalny\+\_\+\+Projekt/\+FInalny\+\_\+\+Projekt/head.h File Reference}
+\hypertarget{head_8h}{}\label{head_8h}\index{FInalny\_Projekt/FInalny\_Projekt/head.h@{FInalny\_Projekt/FInalny\_Projekt/head.h}}
+{\ttfamily \#include $<$string$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_point}{Point}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{head_8h_afc395f9cdbfff7cf265181cacd2ff2d7}{create\+\_\+data}} (int ile\+\_\+pkt, int d, std\+::string input\+\_\+file)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ \mbox{\hyperlink{head_8h_ad56c9213651a7a7e16b0eca06e8a56ac}{k\+\_\+means}} (std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ \texorpdfstring{$\ast$}{*}Points, int powt, int ilosc\+\_\+k, int ile\+\_\+pkt, int d)
+\item 
+std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ \mbox{\hyperlink{head_8h_a43f441a2d3d3d62d5a8666a86fa5c019}{create\+\_\+vec}} (std\+::string input\+\_\+file)
+\item 
+void \mbox{\hyperlink{head_8h_aa8cb47cb8c8315a599d3a43f0ecf544a}{wyjscie}} (std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ \texorpdfstring{$\ast$}{*}Points, int ilosc\+\_\+k, int d, std\+::string output\+\_\+file)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{head_8h_afc395f9cdbfff7cf265181cacd2ff2d7}\label{head_8h_afc395f9cdbfff7cf265181cacd2ff2d7} 
+\index{head.h@{head.h}!create\_data@{create\_data}}
+\index{create\_data@{create\_data}!head.h@{head.h}}
+\doxysubsubsection{\texorpdfstring{create\_data()}{create\_data()}}
+{\footnotesize\ttfamily void create\+\_\+data (\begin{DoxyParamCaption}\item[{int}]{ile\+\_\+pkt,  }\item[{int}]{d,  }\item[{std\+::string}]{input\+\_\+file }\end{DoxyParamCaption})}
+
+\Hypertarget{head_8h_a43f441a2d3d3d62d5a8666a86fa5c019}\label{head_8h_a43f441a2d3d3d62d5a8666a86fa5c019} 
+\index{head.h@{head.h}!create\_vec@{create\_vec}}
+\index{create\_vec@{create\_vec}!head.h@{head.h}}
+\doxysubsubsection{\texorpdfstring{create\_vec()}{create\_vec()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ create\+\_\+vec (\begin{DoxyParamCaption}\item[{std\+::string}]{input\+\_\+file }\end{DoxyParamCaption})}
+
+\Hypertarget{head_8h_ad56c9213651a7a7e16b0eca06e8a56ac}\label{head_8h_ad56c9213651a7a7e16b0eca06e8a56ac} 
+\index{head.h@{head.h}!k\_means@{k\_means}}
+\index{k\_means@{k\_means}!head.h@{head.h}}
+\doxysubsubsection{\texorpdfstring{k\_means()}{k\_means()}}
+{\footnotesize\ttfamily std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ k\+\_\+means (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ \texorpdfstring{$\ast$}{*}}]{Points,  }\item[{int}]{powt,  }\item[{int}]{ilosc\+\_\+k,  }\item[{int}]{ile\+\_\+pkt,  }\item[{int}]{d }\end{DoxyParamCaption})}
+
+(adres wektora punktow,ilosc powtorzen algorytmu,ilosc clustrow,ilosc punktow)
+
+wektor przechowujacy centroidy clustrow
+
+wybieranie losowych punktow jako centroidy
+
+iteracja przez centroidy
+
+przydzielanie punktow do clustrow
+
+zliczanie ilosci punktow w clustrze
+
+iterator koordyantow podanego punktu
+
+liczenie srednich koordynatow
+
+obliczanie sredniej wspolrzednych
+
+dla kazdego klustra-\/\texorpdfstring{$>$}{>}
+
+wyznaczenie nowych centroidow ~\newline
+\Hypertarget{head_8h_aa8cb47cb8c8315a599d3a43f0ecf544a}\label{head_8h_aa8cb47cb8c8315a599d3a43f0ecf544a} 
+\index{head.h@{head.h}!wyjscie@{wyjscie}}
+\index{wyjscie@{wyjscie}!head.h@{head.h}}
+\doxysubsubsection{\texorpdfstring{wyjscie()}{wyjscie()}}
+{\footnotesize\ttfamily void wyjscie (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{struct_point}{Point}} $>$ \texorpdfstring{$\ast$}{*}}]{Points,  }\item[{int}]{ilosc\+\_\+k,  }\item[{int}]{d,  }\item[{std\+::string}]{output\+\_\+file }\end{DoxyParamCaption})}
+

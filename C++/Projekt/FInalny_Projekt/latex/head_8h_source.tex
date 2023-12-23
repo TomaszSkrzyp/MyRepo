@@ -1,0 +1,29 @@
+\doxysection{head.\+h}
+\hypertarget{head_8h_source}{}\label{head_8h_source}\index{FInalny\_Projekt/FInalny\_Projekt/head.h@{FInalny\_Projekt/FInalny\_Projekt/head.h}}
+\mbox{\hyperlink{head_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include<string>}}
+\DoxyCodeLine{00004\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{head_8h_afc395f9cdbfff7cf265181cacd2ff2d7}{create\_data}}(\textcolor{keywordtype}{int}\ ile\_pkt,\ \textcolor{keywordtype}{int}\ d,\ std::string\ input\_file);}
+\DoxyCodeLine{00005\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_point}{Point}}\ \{}
+\DoxyCodeLine{00006\ \ \ \ \ std::vector<double>\ \mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}};}
+\DoxyCodeLine{00007\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{struct_point_a1cc8424bc6af686e5c92c65830d06ddf}{cluster}};}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{struct_point_acc3686cb4de9df68900ba9c38a5f6ef6}{minDist}};}
+\DoxyCodeLine{00009\ \ \ \ \ \mbox{\hyperlink{struct_point_ad9541fdada9d02a48777a4914798e7d3}{Point}}(std::vector<double>\ \mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}})\ :\textcolor{comment}{//lista\ inicjalizujaca\ \ punktu}}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}(\mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}),}
+\DoxyCodeLine{00011\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_point_a1cc8424bc6af686e5c92c65830d06ddf}{cluster}}(-\/1),}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_point_acc3686cb4de9df68900ba9c38a5f6ef6}{minDist}}(20000.0)\ \{\}}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{struct_point_a7dde28996105762fdeba869a0613ce8b}{distance}}(\mbox{\hyperlink{struct_point}{Point}}\ p)\ \{\ }
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sum\ =\ 0;}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}.size();\ ++i)\ \{}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ \ \ \ \ sum\ +=\ (\mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}[i]\ -\/\ p.\mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}[i])\ *\ (\mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}[i]\ -\/\ p.\mbox{\hyperlink{struct_point_ad47d8a477955cf46dd18dfc61fc66f34}{coordinates}}[i]);}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sum;}
+\DoxyCodeLine{00019\ \ \ \ \ \}}
+\DoxyCodeLine{00020\ \};}
+\DoxyCodeLine{00021\ std::vector<Point>\mbox{\hyperlink{head_8h_ad56c9213651a7a7e16b0eca06e8a56ac}{k\_means}}(std::vector<Point>*\ Points,\ \textcolor{keywordtype}{int}\ powt,\ \textcolor{keywordtype}{int}\ ilosc\_k,\ \textcolor{keywordtype}{int}\ ile\_pkt,\ \textcolor{keywordtype}{int}\ d);}
+\DoxyCodeLine{00022\ std::vector<Point>\ \mbox{\hyperlink{head_8h_a43f441a2d3d3d62d5a8666a86fa5c019}{create\_vec}}(std::string\ input\_file);}
+\DoxyCodeLine{00023\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{head_8h_aa8cb47cb8c8315a599d3a43f0ecf544a}{wyjscie}}(std::vector<Point>*\ Points,\ \textcolor{keywordtype}{int}\ ilosc\_k,\ \textcolor{keywordtype}{int}\ d,\ std::string\ output\_file);}
+
+\end{DoxyCode}
