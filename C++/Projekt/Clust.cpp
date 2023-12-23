@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "create.h"
 
 /// @brief ta funkcja jest g
 
@@ -71,6 +72,7 @@ int main(int argc,char*argv[]){
         return sum; 
     } 
 };  
+
     if (argc<4){
         std::cout<<"za malo argumentow";
         return 1;
@@ -101,7 +103,7 @@ int main(int argc,char*argv[]){
             i++;
         }
     }
-
+    create_data();
     std::ifstream input(input_file);
 
     ///document entity
