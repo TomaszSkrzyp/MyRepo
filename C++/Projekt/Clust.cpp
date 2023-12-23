@@ -33,10 +33,7 @@ struct Point{///@brief struktura punktu
     std::vector<double> coordinates; 
     int cluster; 
     double minDist; 
-    Point(): 
-        coordinates(0.0), 
-        cluster(-1), 
-        minDist(20000.0){} 
+    
     Point(std::vector<double> coordinates):///metoda tworzaca punkt
         coordinates(coordinates), 
         cluster(-1), 
@@ -52,6 +49,10 @@ struct Point{///@brief struktura punktu
 
 
 int main(int argc,char*argv[]){
+    if (argc < 4) {
+        std::cout << "za malo argumentow";
+        return 1;
+    }
     struct Point{///@brief struktura punktu 
     std::vector<double> coordinates; 
     int cluster; 
@@ -89,7 +90,7 @@ int main(int argc,char*argv[]){
             output_file=argv[i+1];
             i++;
         }
-       else   if(a=="-k"){
+       else   if (a == "-k") {
                std::istringstream iss(argv[i+1]);
                if ((iss>>k)&& iss.eof()){
                     ///the number is right
@@ -103,28 +104,47 @@ int main(int argc,char*argv[]){
             i++;
         }
     }
+<<<<<<< HEAD
     create_data();
+=======
+    std::cout << input_file;
+    std::cout << output_file;
+    std::cout << k;
+    std::cout << d;
+>>>>>>> 36c9db397f7b70c94ea831e431cc95f9af108734
     std::ifstream input(input_file);
-
+    
     ///document entity
     /// i love doxygen
     std::vector<Point> Points;
+    Point p0 = Point({ 1.0,2.0,3.0 });
+    Point p1 = Point({ 4.0,2.0,7.0 });
+    std::cout << p0.distance(p1);
     std::string line;
+    
     while(std::getline(input, line))
     {
-        std::stringstream ss(line);
-        double i;
-        std::vector<double> v;
-        while( ss >> i ){ 
-            v.push_back(i);
+        if (input) {
+            std::stringstream ss(line);
+            double i;
+            std::vector<double> v;
+            while (ss >> i) {
+                v.push_back(i);
+            }
+            Points.push_back(Point(v));
         }
-        Points.push_back(Point(v));
     }
-    /*std::vector<Point> Points=create_vector(input);*/
+    std::cout << p0.distance(Points[4]);
+    
     
 
-    Point p0=Point({1.0,2.0,3.0});
-    std::cout<<Points[4].distance(p0);
-
+    
+    
+    
     return 0;
+<<<<<<< HEAD
 }
+=======
+}
+///.\x64\Debug\proj.exe -i dataset.txt -o liczby.txt -k 10 -d 3
+>>>>>>> 36c9db397f7b70c94ea831e431cc95f9af108734
