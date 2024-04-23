@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Pliki nagłówkowe">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Pliki zasobów">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\move finder headers">
+      <UniqueIdentifier>{86afd1f0-fe87-4813-b3ba-93c37056de59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\source classes">
+      <UniqueIdentifier>{e3e7f34d-c4db-41fa-ab8c-28a747fd15a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\input/output">
+      <UniqueIdentifier>{a8a53384-c075-4bf6-97c2-f34ab0ed28fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Pliki źródłowe">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Pliki zasobów\Pliki źródłowe\move finders">
+      <UniqueIdentifier>{a0157ebf-c0dd-46ca-b864-4b528b9e021e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Pliki źródłowe\source classes definition">
+      <UniqueIdentifier>{c40a6ef0-c66f-462f-8414-b9490f8bf13a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Pliki źródłowe\i/o definitions">
+      <UniqueIdentifier>{50ad8a4c-7bdd-4421-8691-172a2b75dbcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Pliki źródłowe\game">
+      <UniqueIdentifier>{c3c43fda-e008-4758-8dae-4353685dab2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki zasobów\Pliki źródłowe\players definition">
+      <UniqueIdentifier>{818b73a2-4705-4f22-b17b-e9dedb02a49b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="board_jumps.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\move finders</Filter>
+    </ClCompile>
+    <ClCompile Include="board_moves.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\move finders</Filter>
+    </ClCompile>
+    <ClCompile Include="general.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\move finders</Filter>
+    </ClCompile>
+    <ClCompile Include="moves_jumps.h">
+      <Filter>Pliki nagłówkowe\source classes</Filter>
+    </ClCompile>
+    <ClCompile Include="board.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\source classes definition</Filter>
+    </ClCompile>
+    <ClCompile Include="moves_jumps.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\source classes definition</Filter>
+    </ClCompile>
+    <ClCompile Include="command_input.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\i/o definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="checkers.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="comman_output.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\i/o definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\game</Filter>
+    </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\players definition</Filter>
+    </ClCompile>
+    <ClCompile Include="alpha_beta_helpers.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\players definition</Filter>
+    </ClCompile>
+    <ClCompile Include="game_helpers.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="board_jumps.h">
+      <Filter>Pliki nagłówkowe\move finder headers</Filter>
+    </ClInclude>
+    <ClInclude Include="board_moves.h">
+      <Filter>Pliki nagłówkowe\move finder headers</Filter>
+    </ClInclude>
+    <ClInclude Include="general.h">
+      <Filter>Pliki nagłówkowe\move finder headers</Filter>
+    </ClInclude>
+    <ClInclude Include="board.h">
+      <Filter>Pliki nagłówkowe\source classes</Filter>
+    </ClInclude>
+    <ClInclude Include="command.h">
+      <Filter>Pliki nagłówkowe\input/output</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>Pliki nagłówkowe\source classes</Filter>
+    </ClInclude>
+    <ClInclude Include="alpha_beta.cpp">
+      <Filter>Pliki zasobów\Pliki źródłowe\players definition</Filter>
+    </ClInclude>
+    <ClInclude Include="alpha_beta.h">
+      <Filter>Pliki nagłówkowe\source classes</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
