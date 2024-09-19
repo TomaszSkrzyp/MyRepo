@@ -3,7 +3,7 @@
 void command_control::start_game() const {
 	std::cout << "Player named " << players[0] << " gets color ";
 	if (turn == 'w') {
-		std::cout << "white.\n Player named " << players[1] << " gets color black.\n";
+		std::cout << "white.\nPlayer named " << players[1] << " gets color black.\n";
 	}
 	else if (turn == 'b') {
 		std::cout << "black.\nPlayer named " << players[1]<< " gets color white.\n";
