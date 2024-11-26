@@ -1,0 +1,20 @@
+Zmienna losowa- funkcja X : ktora kazdemu zdarzeniu elementarnemu w ze zbioru omega przyporzadkowuje wartosc ze zbioru R
+ZL dyskretna- zbior wartosci ktore przyjmuje jest zbiorem przeliczalnym
+ZL ciagla- jesli jej wartosi naleza do przedzialu ze zbioru R
+Rozklad ZL- sposob rozdysponowania "masy" prawodpodobienstwa ZL pomiedzy wartosci jakie przyjmuje 
+Dystrybuanta ZL - dla kazdej rzecziwstej wartoscib dystrybuanta F(b) podaje prawdopodobienstwo okreslone dla podzbioru {w: X(w)<b}
+Funkcja gęstości-określa rozkład ciągłej zmiennej losowej X.
+
+Wartość oczekiwana ZL- średnią wartość uzyskiwaną przy wielokrotnym wykonywaniu doświadczenia losowego dla ktorego ZL zostala zdefiniowa, mz1
+Wariancja ZL- wartosc oczekiwana kwadratu odchylenn ZL od jej wartosci oczekiwanej. Moment centralny rzedu 2
+Odchylenie standardowe- pieriwastek z wariancji
+Kwantyl rzedu p-  stanowi wartość xp ZL X, dla której dystrybuanta F(xp) jest równa p
+Standaryzacja- T=(X-E(X))/D(X)
+
+Rozkład geometryczny-Liczba X prób Bemoulliego przeprowadzonych do momentu osiągnięcia pierwszego sukcesu
+ 
+ZL WIELOWYMIAROWA
+P12-prawdopodobieństwo łącznego zajścia 2 zdarzeń:(zmienna losowa X przyjmie wartość x1 ) i (zmienna losowa Y przyjmie wartość y2 ) 
+P1-prawdopodobieństwo brzegowe, że ZL X przyjmie wartość x1 niezależnie od tego jaką wartość przyjmie zmienna losowa Y
+Rozkład warunkowy ZL X - określa rozkład tej zmiennej podwarunkiem, że druga zmienna Y przyjmuje pewną ustaloną wartość yj
+n-wymiarowa ZL- Wektor:(X1,X2..,Xn)którego każda współrzędna Xi dla i=l,...,n jest zmienną losową

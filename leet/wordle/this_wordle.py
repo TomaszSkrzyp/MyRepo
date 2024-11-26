@@ -7,7 +7,7 @@ def wordle():
     letters=list(string.ascii_lowercase)
     
     
-    with open('wordle/words.txt','r') as f:
+    with open('words.txt','r') as f:
         for line in f:
             line=line.strip("\n")
             words[line]=1
@@ -28,11 +28,11 @@ def wordle():
         new_green={}
         new_yellow={}
         new_black={}
-        #print("guess word: "+maxi)
-        #print(len(words))
-        #print("give input")
-        #x=get_input()
-        x=checker(word,maxi)
+        print("guess word: "+maxi)
+        print(len(words))
+        print("give input")
+        x=get_input()
+        #x=checker(word,maxi)
         if x=="ggggg":
             print("word is: "+maxi+ " found in: "+str(i)+" attempts")
             return i
@@ -142,7 +142,7 @@ def test(n):
         sum+=wordle() 
         time_sum+=time.time()-clk1
     print("average score: "+str(sum/n)+" in average time: "+str(time_sum/n))    
-test(1000)
+wordle()
     
 
 
