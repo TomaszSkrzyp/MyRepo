@@ -1,2 +1,0 @@
-import re
-print(re.compile(r'\d{2}[.]\d{4,6}/?').findall("https://www.google.pl/maps/place/Stacja+Paliw+LOTOS/@51.5024972,19.5901445,10z/data=!4m10!1m2!2m1!1sgas+station!3m6!1s0x47198f4cbe497be1:0x208b2a2241817403!8m2!3d51.5024972!4d19.8702959!15sCgtnYXMgc3RhdGlvbloNIgtnYXMgc3RhdGlvbpIBC2dhc19zdGF0aW9u4AEA!16s%2Fg%2F11c54n35px?entry=ttu&g_ep=EgoyMDI0MTAwOS4wIKXMDSoASAFQAw%3D%3D"))
