@@ -13,8 +13,8 @@ from selenium.webdriver.support import expected_conditions as EC
 start = "Gawronow 6, 40-750 Katowice".split()
 finish = "Zlote tarasy, Warszawa".split()
 avg = 0.078  # Average fuel consumption (liters per km)
-cur_fuel = 13.6  # Current fuel in the tank (liters)
-bought_for = 6.84  # Fuel price per liter
+cur_fuel = 2  # Current fuel in the tank (liters)
+bought_for = 6.2  # Fuel price per liter
 tank = 40  # Maximum tank capacity (liters)
 
 def coord_finder(url):
@@ -46,6 +46,7 @@ def get_distance(driver):
     """
     Retrieves the distance between the start and finish locations using Google Maps.
     """
+
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
         (By.CSS_SELECTOR, "#omnibox-directions > div > div:nth-child(2) > div > div > div > div:nth-child(2) > button"))).click()
     driver.refresh()
@@ -53,9 +54,9 @@ def get_distance(driver):
     distance_text = WebDriverWait(driver, 10).until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, "#section-directions-trip-0 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)"))).text
     distance = distance_text.replace(",", ".").split()
-    return float(distance[0]) / 1000 if len(distance[1]) == 1 else float(distance[0])"""Divides by a 1000 if the distance is given in metres, doesn't divide if it is km"""
+    return float(distance[0]) / 1000 if len(distance[1]) == 1 else float(distance[0])
 
-def get_distance_and_go(driver,url):
+def go_and_get_distance(driver,url):
     """ Version of get_distance function allowing you to also go to anbother site, given through parameter url """
     start_url=driver.current_url
     driver.get(url)

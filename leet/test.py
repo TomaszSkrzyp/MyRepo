@@ -1,25 +1,24 @@
-import requests
-from selenium import webdriver
-import time
+from bs4 import BeautifulSoup
 
-def test_requests_get(url):
-    start_time = time.time()
-    response = requests.get(url)
-    end_time = time.time()
-    return end_time - start_time
+html_content = """
+<div class="content-col">
+        <!-- Your HTML content here -->
+</div>
+"""
 
-def test_selenium_get(url):
-    start_time = time.time()
-    driver = webdriver.Chrome()
-    driver.get(url)
-    end_time = time.time()
-    driver.quit()
-    return end_time - start_time
+soup = BeautifulSoup(html_content, 'html.parser')
 
-if __name__ == "__main__":
-    url = "http://wikipedia.com"
-    requests_time = test_requests_get(url)
-    selenium_time = test_selenium_get(url)
-    
-    print(f"requests.get took {requests_time} seconds")
-    print(f"selenium took {selenium_time} seconds")
+# Extracting prices and dates
+prices = soup.find_all('div', class_='price')
+dates = soup.find_all('div', class_='date')
+
+for price, date in zip(prices, dates):
+        print(f"Price: {price.text.strip()}, Date: {date.text.strip()}")
+        # Extracting prices and dates from specific wrapper
+        station_details = soup.find_all('div', class_='station-detail-wrapper pb text-center')
+
+        for detail in station_details:
+                price = detail.find('div', class_='price')
+                date = detail.find('div', class_='date')
+                if price and date:
+                        print(f"Price: {price.text.strip()}, Date: {date.text.strip()}")
