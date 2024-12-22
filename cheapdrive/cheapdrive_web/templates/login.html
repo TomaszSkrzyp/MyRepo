@@ -1,0 +1,29 @@
+<form method="post" action="{% url 'login' %}" class="login-form">
+    {% csrf_token %}
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Enter your username" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" placeholder="Enter your password" required>
+    </div>
+    <div>
+        <input type="checkbox" name="remember_me" id="remember_me">
+        <label for="remember_me">Remember Me</label>
+    </div>
+    <button type="submit">Login</button>
+</form>
+<p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>  <!-- Added link -->
+<a href="{% url 'guest_access' %}" class="guest-link">Continue as Guest</a>
+
+<div class="messages">
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+

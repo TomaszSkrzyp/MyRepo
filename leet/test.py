@@ -1,24 +1,38 @@
-from bs4 import BeautifulSoup
+def print_route_parameters(distance, duration):
+    """Prints distance and duration in a user-friendly format on one line.
 
-html_content = """
-<div class="content-col">
-        <!-- Your HTML content here -->
-</div>
-"""
+    Args:
+        distance: Distance in kilometers.
+        duration: Duration in seconds.
+    """
 
-soup = BeautifulSoup(html_content, 'html.parser')
+    remaining_time = duration
+    time_measures = []
+    time_measures_displayed=0
+    if (remaining_time>=86400) & (time_measures_displayed<2):  # 1 day = 86400 seconds
+        days = remaining_time // 86400
+        time_measures.append(f"{days} {'day' if days == 1 else 'days'}")
+        remaining_time %= 86400
+        time_measures_displayed+=1
 
-# Extracting prices and dates
-prices = soup.find_all('div', class_='price')
-dates = soup.find_all('div', class_='date')
+    if (remaining_time>= 3600) & (time_measures_displayed<2):  # 1 hour = 3600 seconds
+        hours = remaining_time // 3600
+        time_measures.append(f"{hours} {'hour' if hours == 1 else 'hours'}")
+        remaining_time %= 3600
+        
+        time_measures_displayed+=1
 
-for price, date in zip(prices, dates):
-        print(f"Price: {price.text.strip()}, Date: {date.text.strip()}")
-        # Extracting prices and dates from specific wrapper
-        station_details = soup.find_all('div', class_='station-detail-wrapper pb text-center')
+    if (remaining_time>= 60) & (time_measures_displayed<2):  # 1 minute = 60 seconds
+        minutes = remaining_time // 60
+        time_measures.append(f"{minutes} {'minute' if minutes == 1 else 'minutes'}")
+        remaining_time %= 60
+        
+        time_measures_displayed+=1
 
-        for detail in station_details:
-                price = detail.find('div', class_='price')
-                date = detail.find('div', class_='date')
-                if price and date:
-                        print(f"Price: {price.text.strip()}, Date: {date.text.strip()}")
+    if (remaining_time>0) & (time_measures_displayed<1):
+        time_measures.append("1 minute")
+            
+        time_measures_displayed+=1
+
+    print(f"Distance of this route: {round(distance)} kilometers, Duration: {' '.join(time_measures)}")
+print_route_parameters(4000,1740234)

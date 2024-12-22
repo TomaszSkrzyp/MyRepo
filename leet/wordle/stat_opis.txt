@@ -1,0 +1,42 @@
+ 
+ZJAWISKO MASOWE - zjawisko, które badane w duzej masie zdarzen wykazuje pewną prawidlowosc 
+
+Wnioskowanie statystyczne -generalizacja wynikow otrzymanych z proby losowej na cala populacje generalna, z ktorej proba zostala pobrana
+
+Estymacja – szacowanie roznych charakterystyk nieznanego rozkladu zmiennej losowej w populacji generalnej na podstawie rozkladu empirycznyego uzyskanegow  probie losowej
+
+Populacja generalna-  zbior elementow, zwanych jednostkami statystycznymi podobnych do siebie pod wzgledem jakiejs cechy
+
+Proba - podzbior populacji generalnej, obejmujacy częsc jej elementow wybranych
+
+Cecha jakosciowa - nie daje sie mierzyc bezposrednio za pomoca jednostek miary
+
+Próba reprezentatywna – czesc populacji pozwalajaca w przyblizeniu opisac calosc populacji
+
+Dobor losowy proby - taki dobór elementow z populacji do proby statystycznej, w którym: kazda jednostka ma znane szanse dostania sie ,dla każdego zespolu jednostek populacji można obliczyc 
+
+Szereg rozdzielczy - zbiorowosc statystyczna podzielona na pewne klasy(warianty/przedizaly)
+
+Czestosc w1=n1/n
+
+Dystryubuanta empiryczna rozkladu proby- r(x<xi)/n
+
+Estymacja parametryczna - gdy szacujemy wartosci nieznanych parametrow
+
+Estymacja nieparametryczna - Gdy szacujemy nieznana postac funkcyjna 
+
+Estymator punktowy parametru O - Każda statystyka próbkowa Tn = h (X1,..., Xn), której wartości przyjmujemy ^O za oszacowania nieznanego parametru O
+
+MSE=E((est(a) min a)^2)= wariancja estymatora(E(a^ min E(a^))^2+ obciazenie(E(a^) min a))
+
+Ocena parametru O - Wartosc liczbowa ^O estymatora ^0 policzoną na podstawie konkretnej realizacji  x1...xn próby losowej 
+
+Estymator najefektywniejszy ^0 parametru O - ten spośród jego nieobciążonych estymatorów, który posiada najmniejszą wariancję
+
+jesli bias=0: nieobciazony
+
+lim(n>inf) bias=0: asymptotycznie nieobciazony
+ 
+lim d^2=0: zgodnosc(wievej prob- mniejsza roznica pomiedzy ocena a wartoscia rzeczywista)
+
+

@@ -1,0 +1,118 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>2919cab0-e39a-46ec-83f0-122ce1665e69</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>hello_w.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>cheapdrive</Name>
+    <RootNamespace>cheapdrive</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
+    <IsWindowsApplication>False</IsWindowsApplication>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="cheapdrive_web\" />
+    <Folder Include="cheapdrive_web\cheapdrive_app\" />
+    <Folder Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\" />
+    <Folder Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\start\" />
+    <Folder Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\" />
+    <Folder Include="cheapdrive_web\api_calls\" />
+    <Folder Include="cheapdrive_web\cheapdrive_app\migrations\" />
+    <Folder Include="cheapdrive_web\cheapdrive_app\migrations\__pycache__\" />
+    <Folder Include="cheapdrive_web\refill\" />
+    <Folder Include="cheapdrive_web\refill\migrations\" />
+    <Folder Include="cheapdrive_web\scripts\" />
+    <Folder Include="cheapdrive_web\templates\" />
+    <Folder Include="cheapdrive_web\cheapdrive_website\" />
+    <Folder Include="cheapdrive_web\cheapdrive_website\__pycache__\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cheapdrive_web\api_calls\api_exceptions.py" />
+    <Compile Include="cheapdrive_web\api_calls\google_api_calls.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\admin.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\apps.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\api_calls.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\cheapdrive.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\converters.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\getting_station.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\hello.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\input_manager.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\start\distance_manager.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\start\globals_and_inputs.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\user_input.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\web_tricks.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\forms.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\migrations\0001_initial.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\migrations\__init__.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\models.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\tests.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\urls.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\views.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_app\__init__.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_website\asgi.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_website\settings.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_website\urls.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_website\wsgi.py" />
+    <Compile Include="cheapdrive_web\cheapdrive_website\__init__.py" />
+    <Compile Include="cheapdrive_web\refill\admin.py" />
+    <Compile Include="cheapdrive_web\refill\apps.py" />
+    <Compile Include="cheapdrive_web\refill\migrations\__init__.py" />
+    <Compile Include="cheapdrive_web\refill\models.py" />
+    <Compile Include="cheapdrive_web\refill\tests.py" />
+    <Compile Include="cheapdrive_web\refill\urls.py" />
+    <Compile Include="cheapdrive_web\refill\views.py" />
+    <Compile Include="cheapdrive_web\refill\__init__.py" />
+    <Compile Include="hello_w.py" />
+    <Compile Include="cheapdrive_web\manage.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="cheapdrive_web\cheapdrive_website\.env" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\api_calls.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\cheapdrive.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\converters.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\distance_manager.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\exceptions.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\getting_station.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\globals_and_input.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\globals_and_inputs.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\globals_inputs.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\hello.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\input_manager.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\in_out.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\is_it_enough.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\output.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\cheapdrive_logic\__pycache__\user_input.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\create_models.py" />
+    <Content Include="cheapdrive_web\cheapdrive_app\migrations\__pycache__\0001_initial.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_app\migrations\__pycache__\__init__.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\scripts\validation.js" />
+    <Content Include="cheapdrive_web\templates\load_data.html" />
+    <Content Include="cheapdrive_web\templates\login.html" />
+    <Content Include="cheapdrive_web\cheapdrive_website\__pycache__\settings.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\cheapdrive_website\__pycache__\__init__.cpython-311.pyc" />
+    <Content Include="cheapdrive_web\templates\register.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
