@@ -1,0 +1,75 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+.register-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+}
+
+    .register-form label { /*Combine styles for labels and inputs*/
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+register-form label {
+    display: block;
+    font-weight: bold;
+}
+register-form button { /*Simplified button styles*/
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+    .register-form button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+
+.messages ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+}
+
+.messages li {
+    padding: 5px;
+    margin-bottom: 4px;
+    border-radius: 4px;
+}
+
+    .messages li.error {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .messages li.success {
+        background-color: #4CAF50;
+        color: white;
+    }

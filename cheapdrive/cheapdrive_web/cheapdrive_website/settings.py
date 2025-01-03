@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cheapdrive_app',
+    'entry',
     'refill',
 ]
 
@@ -88,7 +88,7 @@ DATABASES = {
         
     }
 }
-AUTH_USER_MODEL = 'cheapdrive_app.User'
+AUTH_USER_MODEL = 'entry.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -120,12 +120,16 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_URL = '/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+SESSION_COOKIE_AGE = 5 * 60
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
