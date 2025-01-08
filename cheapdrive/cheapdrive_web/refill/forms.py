@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-
+from decimal import Decimal
 
 class LoadDataForm(forms.Form):
     starting_address = forms.CharField(
@@ -31,7 +31,7 @@ class LoadDataForm(forms.Form):
         min_value=0,
         required=True,
         widget=forms.NumberInput(attrs={'id': 'id_fuel_consumption_per_100km', 'step': '0.1'}),
-        label="Fuel Consumption (L/100km)"
+        label="Average Fuel Consumption (L/100km)"
     )
     fuel_type = forms.ChoiceField(
         choices=[('P', 'PB95'), ('D', 'Diesel')],
@@ -101,5 +101,13 @@ class LoadDataForm(forms.Form):
                 raise ValidationError({"cur_fuel_percentage": "Current fuel percentage must be between 0 and 100."})
             # Calculate liters based on percentage
             cleaned_data['cur_fuel'] = (cur_fuel_percentage / 100) * tank_size
-
+        def remove_trailing_zeros(value):
+            if value is not None:
+                return str(Decimal(value).normalize())
+            return value
+        cleaned_data['tank_size'] = remove_trailing_zeros(cleaned_data.get('tank_size'))
+        cleaned_data['price_of_fuel'] = remove_trailing_zeros(cleaned_data.get('price_of_fuel'))
+        cleaned_data['fuel_consumption_per_100km'] = remove_trailing_zeros(cleaned_data.get('fuel_consumption_per_100km'))
+        cleaned_data['cur_fuel'] = remove_trailing_zeros(cleaned_data.get('cur_fuel'))
+        
         return cleaned_data

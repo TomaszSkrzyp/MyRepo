@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'entry/login_register.css' %}">
+    <link rel="stylesheet" href="{% static 'entry/login_registerV2.css' %}">
 
 </head>
 <body>
     <form method="post" action="{% url 'login' %}" class="login-form">
+
         {% csrf_token %}
+
         {{ form.as_p }}  <!-- Django renders the form fields -->
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+    <p>Don't have an account? <a href="{% url 'register' %}" class="register-link">Register here</a>.</p>
     <a href="{% url 'guest_access' %}" class="guest-link">Continue as Guest</a>
 
     <div class="messages">

@@ -1,16 +1,18 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip history</title>
+    <title>Trip History</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'entry/trip_history.css' %}">
 </head>
 <body>
-    {% csrf_token %}
-    <h1>Trip History</h1>
-    {% if trip_data %}
-    <div class="container mt-5">
-        <table class="table table-striped table-bordered">
+    <div class="container">
+        <h1>Trip History</h1>
+
+        {% if trip_data %}
+        <table class="table">
             <thead>
                 <tr>
                     <th>Starting Address</th>
@@ -19,12 +21,7 @@
                     <th>Duration (min)</th>
                     <th>Trip Price</th>
                     <th>Currency</th>
-                    <th>Vehicle Fuel Type</th>
-                    <th>Tank Size (L)</th>
-                    <th>Current Fuel (L)</th>
-                    <th>Fuel Consumption (L/100km)</th>
-                    <th>Fuel Price</th>
-                    <th>Refill Needed</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,22 +31,15 @@
                     <td>{{ trip_entry.trip.finishing_address }}</td>
                     <td>{{ trip_entry.trip.distance }}</td>
                     <td>{{ trip_entry.trip.duration }}</td>
-                    <td>{{ trip_entry.trip.trip_price }}</td>
-                    <td>{{ trip_entry.trip.currency }}</td>
 
                     {% if trip_entry.vehicles %}
                     {% for vehicle_entry in trip_entry.vehicles %}
-                    <td>{{ vehicle_entry.vehicle.fuel_type }}</td>
-                    <td>{{ vehicle_entry.vehicle.tank_size }}</td>
-                    <td>{{ vehicle_entry.vehicle.cur_fuel }}</td>
-                    <td>{{ vehicle_entry.vehicle.fuel_consumption_per_100km }}</td>
-                    <td>{{ vehicle_entry.vehicle.price_of_fuel }}</td>
-                    <td>
-                        {% if vehicle_entry.refill_needed %}
-                        Yes
-                        {% else %}
-                        No
-                        {% endif %}
+                    <td>{{ vehicle_entry.vehicle.trip_price }}</td>
+                    <td>{{ vehicle_entry.vehicle.currency }}</td>
+                    <td class="action-btns">
+                        <a href="{% url 'refill:load_data' %}?vehicle_id=none&trip_id={{ trip_entry.trip.id }}" class="btn btn-action">
+                            Use Addresses
+                        </a>
                     </td>
                     {% endfor %}
                     {% else %}

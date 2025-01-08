@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 
+
+
 from .forms import UserRegistrationForm  
 from django.urls import reverse
 from django.contrib import messages
@@ -30,8 +32,11 @@ def visit(request):
     return render(request, 'entry/visit.html')
 
 
-
 def login_view(request):
+    if request.user.is_authenticated:
+        print("wtf")
+        return redirect('logout')  
+    
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -53,19 +58,25 @@ def login_view(request):
             messages.error(request, 'You must be logged in to access that page.')
 
     context = {'form': form}
-    return render(request, 'entry/login.html', context)
+    response = render(request, 'entry/login.html', context)
+
+    # Prevent browser from caching the page
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 
 def logout_view(request):
     logout(request)
     
     messages.success(request, 'You have been logged out successfully.')
-    return redirect('login')
+    return redirect('visit')
 
 
 def guest_access(request):
     request.session['is_guest'] = True  # Flag indicating guest session
-    return redirect(reverse('refill:load_data'))  # Redirect to trip creation page
+    return redirect(f"{reverse('refill:load_data')}?vehicle_id=none&trip_id=none")  # Redirect to trip creation page
 
 @login_required(login_url='/login/')
 def logged_view(request):
@@ -76,8 +87,13 @@ def logged_view(request):
         action = request.POST.get('action')
         if action == 'history':
             return redirect('trip_history')  # URL name for trip history
+        elif action == 'user_vehicles':
+             return redirect('user_vehicles')
+            
         elif action == 'new_trip':
-            return redirect(reverse('refill:load_data') ) # URL name for setting up a new trip
+          return redirect(f"{reverse('refill:load_data')}?vehicle_id=none&trip_id=none")
+        
+            
         elif action == 'logout':
             return redirect('logout')  # URL name for setting up a new trip
         elif action not in ['history', 'new_trip', 'logout']:
@@ -88,22 +104,24 @@ def logged_view(request):
 
 
 
-
 @login_required(login_url='/login/')
 def trip_history_view(request):
+    # Retrieve trips for the logged-in user, ordered by distance in descending order
     trips = Trip.objects.filter(user=request.user).order_by('-distance').prefetch_related('vehicle_data')
     
-    # Add refill status for vehicles
     trip_data = []
     for trip in trips:
         vehicles = trip.vehicle_data.all()
         vehicle_info = []
+        
         for vehicle in vehicles:
+            # Determine if refill is needed based on the distance
             refill_needed = vehicle.need_refill(trip.distance) if trip.distance else False
             vehicle_info.append({
                 'vehicle': vehicle,
                 'refill_needed': refill_needed,
             })
+        
         trip_data.append({
             'trip': trip,
             'vehicles': vehicle_info,
@@ -112,4 +130,11 @@ def trip_history_view(request):
     context = {
         'trip_data': trip_data,
     }
+    
     return render(request, 'entry/trip_history.html', context)
+@login_required
+def user_vehicles_view(request):
+    # Get all vehicles for the logged-in user
+    vehicles = request.user.vehicle_data.all()
+    
+    return render(request, 'entry/user_vehicles.html', {'vehicles': vehicles})

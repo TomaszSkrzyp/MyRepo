@@ -13,9 +13,10 @@
         <h1>Type in your data</h1>
 
         <form method="post" id="load-data-form">
+            {% csrf_token %}
             <div class="two-column-container">
                 <div class="column left-column">
-                    {% csrf_token %}
+
                     {% for field in form %}
                     {% if field.name == 'starting_address' or  field.name == 'tank_size' or  field.name == 'fuel_consumption_per_100km' or field.name == 'cur_fuel_liters_check' %}
                     {% if field.name == 'cur_fuel_liters_check' %}
@@ -79,7 +80,7 @@
                     {% endif %}
                     {% endif %}
                     {% endfor %}
-        
+
                 </div>
             </div>
         </form>

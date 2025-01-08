@@ -1,4 +1,5 @@
 
+from importlib.metadata import requires
 from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.core.exceptions import ValidationError
@@ -26,19 +27,8 @@ class Trip(models.Model):
         validators=[MinValueValidator(0.0)],
         help_text="Duration of the trip - in minutes"
     )
-    trip_price=models.DecimalField(
-        max_digits=7, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0.0)],
-        help_text="Price of the trip",
-        default=0
-    )
     
-    currency = models.CharField(
-        max_length=3, 
-        default='PLN',
-        help_text="The currency of the trip price."
-    )
+    
 class Vehicle_data(models.Model):
     """
     Represents a user's vehicle with information about its fuel type, tank size,
@@ -91,6 +81,13 @@ class Vehicle_data(models.Model):
         default='PLN',
         help_text="The currency of the purchase price."
     )
+    trip_price=models.DecimalField(
+        max_digits=7, 
+        decimal_places=2, 
+        validators=[MinValueValidator(0.0)],
+        help_text="Price of the trip",
+        default=0
+    )
     def need_refill(self, distance):
         """
         Checks if the vehicle needs a refill based on distance and fuel consumption.
@@ -111,7 +108,16 @@ class Vehicle_data(models.Model):
             return True # Invalid fuel data
 
         return self.cur_fuel - fuel_needed < 0.1 * float(self.tank_size)
-
+    
+     # Optional relationship with User model, allowing guest users to not have this field set
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True, 
+        related_name='vehicle_data', 
+        help_text="The user who owns the vehicle."
+    )
 
     
 
