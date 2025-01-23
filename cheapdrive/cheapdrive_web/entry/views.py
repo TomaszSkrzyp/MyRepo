@@ -1,4 +1,5 @@
 
+from secrets import token_bytes
 from django.http import HttpResponse,HttpResponseBadRequest
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
@@ -11,6 +12,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from refill.models import Trip
+from .database_updates import update_brand_prices,update_station_objects
 
 def register(request):
     if request.method == 'POST':
@@ -19,7 +21,7 @@ def register(request):
             user = form.save()  # This creates and saves the user
             # ... add user to groups, send verification email, etc. ...
             messages.success(request, 'Registration successful!')
-            return redirect('login')
+            return redirect('entry:login')
         else:
             messages.error(request, 'Invalid registration information.')
     else:
@@ -28,14 +30,14 @@ def register(request):
     return render(request, 'entry/register.html', context)
 
 def visit(request):
-    
+    #update_brand_prices();update_station_objects()
     return render(request, 'entry/visit.html')
 
 
 def login_view(request):
     if request.user.is_authenticated:
         print("wtf")
-        return redirect('logout')  
+        return redirect('entry:logout')  
     
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -46,7 +48,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Login successful!')
-                next_url = request.GET.get('next', 'logged')  # Redirect to 'next' or default to 'logged'
+                next_url = request.GET.get('next', 'entry:logged')  # Redirect to 'next' or default to 'logged'
                 return redirect(next_url)
             else:
                 messages.error(request, 'Invalid username or password.')
@@ -71,7 +73,7 @@ def logout_view(request):
     logout(request)
     
     messages.success(request, 'You have been logged out successfully.')
-    return redirect('visit')
+    return redirect('entry:visit')
 
 
 def guest_access(request):
@@ -86,19 +88,19 @@ def logged_view(request):
     if request.method == 'POST':
         action = request.POST.get('action')
         if action == 'history':
-            return redirect('trip_history')  # URL name for trip history
+            return redirect('entry:trip_history')  # URL name for trip history
         elif action == 'user_vehicles':
-             return redirect('user_vehicles')
+             return redirect('entry:user_vehicles')
             
         elif action == 'new_trip':
           return redirect(f"{reverse('refill:load_data')}?vehicle_id=none&trip_id=none")
         
             
         elif action == 'logout':
-            return redirect('logout')  # URL name for setting up a new trip
+            return redirect('entry:logout')  # URL name for setting up a new trip
         elif action not in ['history', 'new_trip', 'logout']:
             messages.error(request, "Invalid action selected.")
-            return redirect('logged')
+            return redirect('entry:logged')
         
     return render(request, 'entry/logged.html')
 
@@ -107,24 +109,23 @@ def logged_view(request):
 @login_required(login_url='/login/')
 def trip_history_view(request):
     # Retrieve trips for the logged-in user, ordered by distance in descending order
-    trips = Trip.objects.filter(user=request.user).order_by('-distance').prefetch_related('vehicle_data')
+    trips = Trip.objects.filter(user=request.user).order_by('-first_trip_node_id')
     
     trip_data = []
     for trip in trips:
-        vehicles = trip.vehicle_data.all()
-        vehicle_info = []
-        
-        for vehicle in vehicles:
-            # Determine if refill is needed based on the distance
-            refill_needed = vehicle.need_refill(trip.distance) if trip.distance else False
-            vehicle_info.append({
-                'vehicle': vehicle,
-                'refill_needed': refill_needed,
-            })
+        vehicle = trip.vehicle
+        total_distance=trip.total_distance()
+        refill_needed = vehicle.need_refill(total_distance) if total_distance else False
+            
         
         trip_data.append({
-            'trip': trip,
-            'vehicles': vehicle_info,
+            'origin_address':trip.origin_address(),
+            'destination_address':trip.destination_address(),
+            'total_distance':total_distance,
+            'total_duration':trip.total_duration(),
+            'total_price':trip.total_price(),
+            'currency':trip.main_currency(),
+            'trip_id':trip.id,
         })
 
     context = {
@@ -138,3 +139,4 @@ def user_vehicles_view(request):
     vehicles = request.user.vehicle_data.all()
     
     return render(request, 'entry/user_vehicles.html', {'vehicles': vehicles})
+

@@ -15,6 +15,8 @@
     <IsWindowsApplication>False</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2946,11 +2948,9 @@
     <Folder Include="cheapdrive_web\api_calls\" />
     <Folder Include="cheapdrive_web\entry\" />
     <Folder Include="cheapdrive_web\entry\migrations\" />
-    <Folder Include="cheapdrive_web\entry\__pycache__\" />
     <Folder Include="cheapdrive_web\refill\" />
-    <Folder Include="cheapdrive_web\refill\migrations\" />
     <Folder Include="cheapdrive_web\cheapdrive_website\" />
-    <Folder Include="cheapdrive_web\cheapdrive_website\__pycache__\" />
+    <Folder Include="cheapdrive_web\refill\migrations\" />
     <Folder Include="cheapdrive_web\static\" />
     <Folder Include="cheapdrive_web\static\admin\" />
     <Folder Include="cheapdrive_web\static\admin\css\" />
@@ -4713,8 +4713,10 @@
     <Compile Include=".venv\Lib\site-packages\urllib3\__init__.py" />
     <Compile Include=".venv\Lib\site-packages\_distutils_hack\override.py" />
     <Compile Include=".venv\Lib\site-packages\_distutils_hack\__init__.py" />
+    <Compile Include="cheapdrive_web\api_calls\api_calculations.py" />
     <Compile Include="cheapdrive_web\api_calls\api_exceptions.py" />
     <Compile Include="cheapdrive_web\api_calls\google_api_calls.py" />
+    <Compile Include="cheapdrive_web\api_calls\other_api_calls.py" />
     <Compile Include="cheapdrive_web\cheapdrive_website\asgi.py" />
     <Compile Include="cheapdrive_web\cheapdrive_website\settings.py" />
     <Compile Include="cheapdrive_web\cheapdrive_website\urls.py" />
@@ -4722,8 +4724,8 @@
     <Compile Include="cheapdrive_web\cheapdrive_website\__init__.py" />
     <Compile Include="cheapdrive_web\entry\admin.py" />
     <Compile Include="cheapdrive_web\entry\apps.py" />
+    <Compile Include="cheapdrive_web\entry\database_updates.py" />
     <Compile Include="cheapdrive_web\refill\create_models.py" />
-    <Compile Include="cheapdrive_web\entry\migrations\__init__.py" />
     <Compile Include="cheapdrive_web\entry\models.py" />
     <Compile Include="cheapdrive_web\entry\tests.py" />
     <Compile Include="cheapdrive_web\entry\urls.py" />
@@ -4732,16 +4734,20 @@
     <Compile Include="cheapdrive_web\refill\admin.py" />
     <Compile Include="cheapdrive_web\refill\apps.py" />
     <Compile Include="cheapdrive_web\refill\forms.py" />
-    <Compile Include="cheapdrive_web\refill\migrations\__init__.py" />
+    <Compile Include="cheapdrive_web\refill\gas_station_looker.py" />
+    <Compile Include="cheapdrive_web\refill\make_trips.py" />
     <Compile Include="cheapdrive_web\refill\models.py" />
+    <Compile Include="cheapdrive_web\refill\route_choice.py" />
     <Compile Include="cheapdrive_web\refill\tests.py" />
     <Compile Include="cheapdrive_web\refill\urls.py" />
     <Compile Include="cheapdrive_web\refill\views.py" />
     <Compile Include="cheapdrive_web\refill\__init__.py" />
+    <Compile Include="cheapdrive_web\templates\refill\fuel_amount.html" />
     <Compile Include="hello_w.py" />
     <Compile Include="cheapdrive_web\manage.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".gcloudignore" />
     <Content Include=".venv\Lib\site-packages\asgiref-3.8.1.dist-info\INSTALLER" />
     <Content Include=".venv\Lib\site-packages\asgiref-3.8.1.dist-info\LICENSE" />
     <Content Include=".venv\Lib\site-packages\asgiref-3.8.1.dist-info\METADATA" />
@@ -9993,13 +9999,9 @@
     <Content Include=".venv\Scripts\python.exe" />
     <Content Include=".venv\Scripts\pythonw.exe" />
     <Content Include=".venv\Scripts\sqlformat.exe" />
+    <Content Include="app.yaml" />
     <Content Include="cheapdrive_web\cheapdrive_website\.env" />
     <Content Include="cheapdrive_web\entry\forms.py" />
-    <Content Include="cheapdrive_web\entry\__pycache__\apps.cpython-311.pyc" />
-    <Content Include="cheapdrive_web\entry\__pycache__\models.cpython-311.pyc" />
-    <Content Include="cheapdrive_web\entry\__pycache__\__init__.cpython-311.pyc" />
-    <Content Include="cheapdrive_web\cheapdrive_website\__pycache__\settings.cpython-311.pyc" />
-    <Content Include="cheapdrive_web\cheapdrive_website\__pycache__\__init__.cpython-311.pyc" />
     <Content Include="cheapdrive_web\static\admin\css\autocomplete.css" />
     <Content Include="cheapdrive_web\static\admin\css\base.css" />
     <Content Include="cheapdrive_web\static\admin\css\changelists.css" />
@@ -10128,22 +10130,23 @@
     <Content Include="cheapdrive_web\static\admin\js\vendor\xregexp\xregexp.js" />
     <Content Include="cheapdrive_web\static\admin\js\vendor\xregexp\xregexp.min.js" />
     <Content Include="cheapdrive_web\static\entry\logged.css" />
-    <Content Include="cheapdrive_web\static\entry\trip_history.css" />
+    <Content Include="cheapdrive_web\static\entry\trip_historyV2.css" />
     <Content Include="cheapdrive_web\static\refill\autocomplete.js" />
     <Content Include="cheapdrive_web\static\refill\fuel_input.js" />
     <Content Include="cheapdrive_web\static\refill\visualisation.js" />
     <Content Include="cheapdrive_web\static\refill\load_data2.css" />
     <Content Include="cheapdrive_web\static\entry\login_registerV2.css" />
-    <Content Include="cheapdrive_web\static\refill\validation3.js" />
+    <Content Include="cheapdrive_web\static\refill\validation.js" />
     <Content Include="cheapdrive_web\static\entry\visit.css" />
     <Content Include="cheapdrive_web\templates\entry\logged.html" />
     <Content Include="cheapdrive_web\templates\entry\trip_history.html" />
     <Content Include="cheapdrive_web\templates\entry\user_vehicles.html" />
+    <Content Include="cheapdrive_web\templates\refill\choose_option.html" />
     <Content Include="cheapdrive_web\templates\refill\load_data.html" />
     <Content Include="cheapdrive_web\templates\entry\login.html" />
     <Content Include="cheapdrive_web\templates\entry\register.html" />
     <Content Include="cheapdrive_web\templates\entry\visit.html" />
-    <Content Include="cheapdrive_web\templates\refill\no_refill_results.html" />
+    <Content Include="cheapdrive_web\templates\refill\results.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

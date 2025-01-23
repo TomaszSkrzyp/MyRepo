@@ -17,7 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
+# Quick-origin development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -30,8 +30,11 @@ ALLOWED_HOSTS = []
 
 import environ
 # Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+env = environ.Env(DEBUG=(bool, False))
+env_file = os.path.join(BASE_DIR, '.env')
+
+env.read_env(env_file)
+
 
 # Application definition
 
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'entry',
     'refill',
 ]
@@ -80,14 +84,23 @@ WSGI_APPLICATION = 'cheapdrive_website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        'GOOGLE_API_KEY': env('GOOGLE_API_KEY')
-        
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Use PostGIS for geospatial support
+        'NAME': 'cheapdrive_database',      # Database name created earlier
+        'USER': 'kdayboy',              # PostgreSQL user
+        'PASSWORD': 'Haslopg123',      # PostgreSQL password
+        'HOST': 'localhost',           # Database host (localhost for local setup)
+        'PORT': '5432', 
     }
+    
 }
+
+
 AUTH_USER_MODEL = 'entry.User'
 
 # Password validation
@@ -134,3 +147,5 @@ SESSION_COOKIE_AGE = 5 * 60
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+GDAL_LIBRARY_PATH=r'C:\OSGeo4W\bin\gdal306.dll'
+os.environ['GDAL_LIBRARY_PATH'] = r'C:\OSGeo4W\bin\gdal306.dll'

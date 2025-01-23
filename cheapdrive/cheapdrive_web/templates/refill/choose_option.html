@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    <p>Select the preferred route optimization:</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="choice" value="time">Optimize by Time</button>
+        <p><strong>This route's time:</strong> {{ by_time_duration }}</p>
+        <p><strong>This route's distance:</strong> {{ by_time_distance }}</p>
+        <button type="submit" name="choice" value="distance">Optimize by Distance</button>
+        <p><strong>This route's time:</strong> {{ by_distance_duration }}</p>
+        <p><strong>This route's distance:</strong> {{ by_distance_distance }}</p>
+    </form>
+</body>
+
+</html>

@@ -43,8 +43,8 @@ function validatePercentage(percentage) {
 
 function submitform() {
     const form = document.getElementById('form');
-    const startingAddress = document.getElementById('starting_address').value;
-    const finishingAddress = document.getElementById('finishing_address').value;
+    const startingAddress = document.getElementById('origin_address').value;
+    const finishingAddress = document.getElementById('destination_address').value;
     const tankSize = document.getElementById('tank_size').value;
     const fuelType = document.getElementById('fuel_type').value;
     const curFuelInputType = document.querySelector('input[name="cur_fuel_input_type"]:checked').value;

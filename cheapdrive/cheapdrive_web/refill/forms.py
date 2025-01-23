@@ -3,13 +3,13 @@ from django.core.exceptions import ValidationError
 from decimal import Decimal
 
 class LoadDataForm(forms.Form):
-    starting_address = forms.CharField(
+    origin_address = forms.CharField(
         required=True,
-        widget=forms.TextInput(attrs={'id': 'id_starting_address', 'class': 'autocomplete'})
+        widget=forms.TextInput(attrs={'id': 'id_origin_address', 'class': 'autocomplete'})
     )
-    finishing_address = forms.CharField(
+    destination_address = forms.CharField(
         required=True,
-        widget=forms.TextInput(attrs={'id': 'id_finishing_address', 'class': 'autocomplete'})
+        widget=forms.TextInput(attrs={'id': 'id_destination_address', 'class': 'autocomplete'})
     )
     tank_size = forms.FloatField(
         min_value=0,
@@ -34,7 +34,7 @@ class LoadDataForm(forms.Form):
         label="Average Fuel Consumption (L/100km)"
     )
     fuel_type = forms.ChoiceField(
-        choices=[('P', 'PB95'), ('D', 'Diesel')],
+        choices=[('PB95', 'PB95'), ('D', 'Diesel'),('PB98', 'PB98'), ('LPG','LPG')],
         required=True,
         widget=forms.Select(attrs={'id': 'id_fuel_type'}),
         label="Fuel Type"

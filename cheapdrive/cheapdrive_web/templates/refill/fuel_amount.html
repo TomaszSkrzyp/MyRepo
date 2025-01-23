@@ -1,0 +1,65 @@
+<!-- fuel_amount.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Amount</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .slider-container {
+            margin-top: 20px;
+        }
+        .slider {
+            width: 100%;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+        .result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Enter Fuel Quantity</h2>
+    
+    {% if error_message %}
+        <div class="error-message">{{ error_message }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Slider for fuel quantity -->
+        <div class="slider-container">
+            <label for="fuel_quantity">Fuel Quantity (Liters):</label>
+            <input type="range" id="fuel_quantity" name="fuel_quantity" class="slider" 
+                min="{{ min_value }}" max="{{ max_value }}" value="{{ min_value }}" step="0.1" 
+                oninput="this.nextElementSibling.value = this.value">
+            <output>{{ min_value }}</output>
+        </div>
+
+        <div>
+            <p class="result">
+                Minimum Fuel: {{ min_value }} L<br>
+                Maximum Fuel: {{ max_value }} L
+            </p>
+        </div>
+
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'entry/login_registerV2.css' %}">
 </head>
 <body>
-    <form method="post" action="{% url 'register' %}" class="register-form">
+    <form method="post" action="{% url 'entry:register' %}" class="register-form">
         {% csrf_token %}
         {{ form.as_p }}  <!-- Django renders the form fields -->
         <button type="submit">Register</button>

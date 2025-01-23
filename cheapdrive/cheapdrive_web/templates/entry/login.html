@@ -9,15 +9,15 @@
 
 </head>
 <body>
-    <form method="post" action="{% url 'login' %}" class="login-form">
+    <form method="post" action="{% url 'entry:login' %}" class="login-form">
 
         {% csrf_token %}
 
         {{ form.as_p }}  <!-- Django renders the form fields -->
         <button type="submit">Login</button>
     </form>
-    <p>Don't have an account? <a href="{% url 'register' %}" class="register-link">Register here</a>.</p>
-    <a href="{% url 'guest_access' %}" class="guest-link">Continue as Guest</a>
+    <p>Don't have an account? <a href="{% url 'entry:register' %}" class="register-link">Register here</a>.</p>
+    <a href="{% url 'entry:guest_access' %}" class="guest-link">Continue as Guest</a>
 
     <div class="messages">
         {% if messages %}

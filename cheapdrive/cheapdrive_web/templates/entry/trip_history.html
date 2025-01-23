@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trip History</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'entry/trip_history.css' %}">
+    <link rel="stylesheet" href="{% static 'entry/trip_historyV2.css' %}">
 </head>
 <body>
     <div class="container">
@@ -20,33 +20,25 @@
                     <th>Distance (km)</th>
                     <th>Duration (min)</th>
                     <th>Trip Price</th>
-                    <th>Currency</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for trip_entry in trip_data %}
                 <tr>
-                    <td>{{ trip_entry.trip.starting_address }}</td>
-                    <td>{{ trip_entry.trip.finishing_address }}</td>
-                    <td>{{ trip_entry.trip.distance }}</td>
-                    <td>{{ trip_entry.trip.duration }}</td>
+                    <td>{{ trip_entry.origin_address }}</td>
+                    <td>{{ trip_entry.destination_address }}</td>
+                    <td>{{ trip_entry.total_distance }}</td>
+                    <td>{{ trip_entry.total_duration }}</td>
 
-                    {% if trip_entry.vehicles %}
-                    {% for vehicle_entry in trip_entry.vehicles %}
-                    <td>{{ vehicle_entry.vehicle.trip_price }}</td>
-                    <td>{{ vehicle_entry.vehicle.currency }}</td>
+                    <td>{{ trip_entry.total_price }} {{ trip_entry.currency }}</td>
                     <td class="action-btns">
-                        <a href="{% url 'refill:load_data' %}?vehicle_id=none&trip_id={{ trip_entry.trip.id }}" class="btn btn-action">
+                        <a href="{% url 'refill:load_data' %}?vehicle_id=none&trip_id={{ trip_entry.trip_id }}" class="btn btn-action">
                             Use Addresses
                         </a>
                     </td>
                     {% endfor %}
-                    {% else %}
-                    <td colspan="6">No vehicle data available</td>
-                    {% endif %}
                 </tr>
-                {% endfor %}
             </tbody>
         </table>
         {% else %}

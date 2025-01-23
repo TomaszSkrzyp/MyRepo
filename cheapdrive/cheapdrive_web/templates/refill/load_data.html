@@ -18,7 +18,7 @@
                 <div class="column left-column">
 
                     {% for field in form %}
-                    {% if field.name == 'starting_address' or  field.name == 'tank_size' or  field.name == 'fuel_consumption_per_100km' or field.name == 'cur_fuel_liters_check' %}
+                    {% if field.name == 'origin_address' or  field.name == 'tank_size' or  field.name == 'fuel_consumption_per_100km' or field.name == 'cur_fuel_liters_check' %}
                     {% if field.name == 'cur_fuel_liters_check' %}
                     <div class="fuel-input-group">
                         <label>
@@ -46,7 +46,7 @@
                 <div class="column right-column">
 
                     {% for field in form %}
-                    {% if field.name == 'finishing_address' or  field.name == 'fuel_type' or  field.name == 'price_of_fuel'  or  field.name == 'cur_fuel_percentage_check' %}
+                    {% if field.name == 'destination_address' or  field.name == 'fuel_type' or  field.name == 'price_of_fuel'  or  field.name == 'cur_fuel_percentage_check' %}
                     {% if field.name == 'cur_fuel_percentage_check' %}
                     <div class="fuel-input-group">
                         <label>
@@ -100,6 +100,6 @@
     <script src="{% static 'refill/fuel_input.js' %}"></script>
 
     <script src="{% static 'refill/visualisation.js' %}"></script>
-    <script src="{% static 'refill/validation3.js' %}"></script>
+    <script src="{% static 'refill/validation.js' %}"></script>
 </body>
 </html>

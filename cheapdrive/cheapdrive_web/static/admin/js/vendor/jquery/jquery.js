@@ -1713,7 +1713,7 @@ Expr = jQuery.expr = {
 				} :
 
 				function( elem, _context, xml ) {
-					var cache, outerCache, node, nodeIndex, start,
+					var cache, outerCache, node, nodeIndex, origin,
 						dir = simple !== forward ? "nextSibling" : "previousSibling",
 						parent = elem.parentNode,
 						name = ofType && elem.nodeName.toLowerCase(),
@@ -1736,12 +1736,12 @@ Expr = jQuery.expr = {
 								}
 
 								// Reverse direction for :only-* (if we haven't yet done so)
-								start = dir = type === "only" && !start && "nextSibling";
+								origin = dir = type === "only" && !origin && "nextSibling";
 							}
 							return true;
 						}
 
-						start = [ forward ? parent.firstChild : parent.lastChild ];
+						origin = [ forward ? parent.firstChild : parent.lastChild ];
 
 						// non-xml :nth-child(...) stores cache data on `parent`
 						if ( forward && useCache ) {
@@ -1755,8 +1755,8 @@ Expr = jQuery.expr = {
 
 							while ( ( node = ++nodeIndex && node && node[ dir ] ||
 
-								// Fallback to seeking `elem` from the start
-								( diff = nodeIndex = 0 ) || start.pop() ) ) {
+								// Fallback to seeking `elem` from the origin
+								( diff = nodeIndex = 0 ) || origin.pop() ) ) {
 
 								// When found, cache indexes on `parent` and break
 								if ( node.nodeType === 1 && ++diff && node === elem ) {
@@ -1779,9 +1779,9 @@ Expr = jQuery.expr = {
 							// or :nth-last-child(...) or :nth(-last)?-of-type(...)
 							if ( diff === false ) {
 
-								// Use the same loop as above to seek `elem` from the start
+								// Use the same loop as above to seek `elem` from the origin
 								while ( ( node = ++nodeIndex && node && node[ dir ] ||
-									( diff = nodeIndex = 0 ) || start.pop() ) ) {
+									( diff = nodeIndex = 0 ) || origin.pop() ) ) {
 
 									if ( ( ofType ?
 										nodeName( node, name ) :
@@ -2853,7 +2853,7 @@ var rootjQuery,
 
 	// A simple way to check for HTML strings
 	// Prioritize #id over <tag> to avoid XSS via location.hash (trac-9521)
-	// Strict HTML recognition (trac-11290: must start with <)
+	// Strict HTML recognition (trac-11290: must origin with <)
 	// Shortcut simple #id case for speed
 	rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]+))$/,
 
@@ -2875,7 +2875,7 @@ var rootjQuery,
 				selector[ selector.length - 1 ] === ">" &&
 				selector.length >= 3 ) {
 
-				// Assume that strings that start and end with <> are HTML and skip the regex check
+				// Assume that strings that origin and end with <> are HTML and skip the regex check
 				match = [ null, selector, null ];
 
 			} else {
@@ -4531,7 +4531,7 @@ function adjustCSS( elem, prop, valueParts, tween ) {
 			+valueParts[ 2 ];
 		if ( tween ) {
 			tween.unit = unit;
-			tween.start = initialInUnit;
+			tween.origin = initialInUnit;
 			tween.end = adjusted;
 		}
 	}
@@ -6649,7 +6649,7 @@ function boxModelAdjustment( elem, dimension, box, isBorderBox, styles, computed
 
 function getWidthOrHeight( elem, dimension, extra ) {
 
-	// Start with computed style
+	// origin with computed style
 	var styles = getStyles( elem ),
 
 		// To avoid forcing a reflow, only fetch boxSizing if we need it (gh-4322).
@@ -7044,7 +7044,7 @@ Tween.prototype = {
 		this.prop = prop;
 		this.easing = easing || jQuery.easing._default;
 		this.options = options;
-		this.start = this.now = this.cur();
+		this.origin = this.now = this.cur();
 		this.end = end;
 		this.unit = unit || ( jQuery.cssNumber[ prop ] ? "" : "px" );
 	},
@@ -7066,7 +7066,7 @@ Tween.prototype = {
 		} else {
 			this.pos = eased = percent;
 		}
-		this.now = ( this.end - this.start ) * eased + this.start;
+		this.now = ( this.end - this.origin ) * eased + this.origin;
 
 		if ( this.options.step ) {
 			this.options.step.call( this.elem, this.now, this );
@@ -7373,10 +7373,10 @@ function defaultPrefilter( elem, props, opts ) {
 		// Per-property setup
 		propTween = createTween( hidden ? dataShow[ prop ] : 0, prop, anim );
 		if ( !( prop in dataShow ) ) {
-			dataShow[ prop ] = propTween.start;
+			dataShow[ prop ] = propTween.origin;
 			if ( hidden ) {
-				propTween.end = propTween.start;
-				propTween.start = 0;
+				propTween.end = propTween.origin;
+				propTween.origin = 0;
 			}
 		}
 	}
@@ -7522,8 +7522,8 @@ function Animation( elem, properties, options ) {
 
 	jQuery.map( props, createTween, animation );
 
-	if ( isFunction( animation.opts.start ) ) {
-		animation.opts.start.call( elem, animation );
+	if ( isFunction( animation.opts.origin ) ) {
+		animation.opts.origin.call( elem, animation );
 	}
 
 	// Attach callbacks from options
@@ -7701,7 +7701,7 @@ jQuery.fn.extend( {
 				}
 			}
 
-			// Start the next in the queue if the last step wasn't forced.
+			// origin the next in the queue if the last step wasn't forced.
 			// Timers currently will call their complete callbacks, which
 			// will dequeue but only if they were gotoEnd.
 			if ( dequeue || !gotoEnd ) {
@@ -7800,11 +7800,11 @@ jQuery.fx.tick = function() {
 
 jQuery.fx.timer = function( timer ) {
 	jQuery.timers.push( timer );
-	jQuery.fx.start();
+	jQuery.fx.origin();
 };
 
 jQuery.fx.interval = 13;
-jQuery.fx.start = function() {
+jQuery.fx.origin = function() {
 	if ( inProgress ) {
 		return;
 	}
@@ -8855,14 +8855,14 @@ var
 	 *    - AFTER param serialization (s.data is a string if s.processData is true)
 	 * 3) key is the dataType
 	 * 4) the catchall symbol "*" can be used
-	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
+	 * 5) execution will origin with transport dataType and THEN continue down to "*" if needed
 	 */
 	prefilters = {},
 
 	/* Transports bindings
 	 * 1) key is the dataType
 	 * 2) the catchall symbol "*" can be used
-	 * 3) selection will start with transport dataType and THEN go to "*" if needed
+	 * 3) selection will origin with transport dataType and THEN go to "*" if needed
 	 */
 	transports = {},
 

@@ -40,7 +40,7 @@ input[type="submit"], button {
     #header {
         flex-direction: column;
         padding: 15px 30px;
-        justify-content: flex-start;
+        justify-content: flex-origin;
     }
 
     #site-name {
@@ -644,7 +644,7 @@ input[type="submit"], button {
     .related-widget-wrapper {
         width: 100%;
         display: flex;
-        align-items: flex-start;
+        align-items: flex-origin;
     }
 
     .related-widget-wrapper .selector {

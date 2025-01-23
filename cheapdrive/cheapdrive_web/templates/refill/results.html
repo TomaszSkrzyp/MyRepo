@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Summary</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Trip Summary</h1>
+        <div class="details">
+
+            <p><strong>Trip starting address:</strong> {{ origin }}</p>
+            <p><strong>Trip destination:</strong> {{ destination }}</p>
+            <p><strong>Price:</strong> {{ cost }} {{ currency }}</p>
+            <p><strong>Duration:</strong> {{ duration }}</p>
+            <p><strong>Distance:</strong> {{ distance }}</p>
+            <p><strong>Fuel left:</strong> {{ fuel_left }} </p>
+            {% if needs_refill %}
+                <p><strong>Status:</strong> <span style="color: red;">Refill Needed</span></p>
+                <p><strong>Refill price:</strong> {{ refill_price }}</p>
+            {% else %}
+                <p><strong>Status:</strong> <span style="color: green;">No Refill Needed</span></p>
+            {% endif %}
+
+
+        </div>
+    </div>
+    <div class="messages">
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

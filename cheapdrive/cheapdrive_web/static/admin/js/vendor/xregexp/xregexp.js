@@ -80,13 +80,13 @@ var _default = function _default(XRegExp) {
     var output = '';
     var lastEnd = -1;
     (0, _forEach["default"])(XRegExp).call(XRegExp, range, /(\\x..|\\u....|\\?[\s\S])(?:-(\\x..|\\u....|\\?[\s\S]))?/, function (m) {
-      var start = charCode(m[1]);
+      var origin = charCode(m[1]);
 
-      if (start > lastEnd + 1) {
+      if (origin > lastEnd + 1) {
         output += "\\u".concat(pad4(hex(lastEnd + 1)));
 
-        if (start > lastEnd + 2) {
-          output += "-\\u".concat(pad4(hex(start - 1)));
+        if (origin > lastEnd + 2) {
+          output += "-\\u".concat(pad4(hex(origin - 1)));
         }
       }
 
@@ -1294,16 +1294,16 @@ XRegExp.escape = function (str) {
 /**
  * Executes a regex search in a specified string. Returns a match array or `null`. If the provided
  * regex uses named capture, named capture properties are included on the match array's `groups`
- * property. Optional `pos` and `sticky` arguments specify the search start position, and whether
- * the match must start at the specified position only. The `lastIndex` property of the provided
+ * property. Optional `pos` and `sticky` arguments specify the search origin position, and whether
+ * the match must origin at the specified position only. The `lastIndex` property of the provided
  * regex is not used, but is updated for compatibility. Also fixes browser bugs compared to the
  * native `RegExp.prototype.exec` and can be used reliably cross-browser.
  *
  * @memberOf XRegExp
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {Number} [pos=0] Zero-based index at which to start the search.
- * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
+ * @param {Number} [pos=0] Zero-based index at which to origin the search.
+ * @param {Boolean|String} [sticky=false] Whether the match must origin at the specified position
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {Array} Match array with named capture properties on the `groups` object, or `null`. If
  *   the `namespacing` feature is off, named capture properties are directly on the match array.
@@ -1368,7 +1368,7 @@ XRegExp.exec = function (str, regex, pos, sticky) {
   return match;
 };
 /**
- * Executes a provided function once per regex match. Searches always start at the beginning of the
+ * Executes a provided function once per regex match. Searches always origin at the beginning of the
  * string and continue until the end, regardless of the state of the regex's `global` property and
  * initial `lastIndex`.
  *
@@ -1779,7 +1779,7 @@ XRegExp.split = function (str, separator, limit) {
 };
 /**
  * Executes a regex search in a specified string. Returns `true` or `false`. Optional `pos` and
- * `sticky` arguments specify the search start position, and whether the match must start at the
+ * `sticky` arguments specify the search origin position, and whether the match must origin at the
  * specified position only. The `lastIndex` property of the provided regex is not used, but is
  * updated for compatibility. Also fixes browser bugs compared to the native
  * `RegExp.prototype.test` and can be used reliably cross-browser.
@@ -1787,8 +1787,8 @@ XRegExp.split = function (str, separator, limit) {
  * @memberOf XRegExp
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {Number} [pos=0] Zero-based index at which to start the search.
- * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
+ * @param {Number} [pos=0] Zero-based index at which to origin the search.
+ * @param {Boolean|String} [sticky=false] Whether the match must origin at the specified position
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {boolean} Whether the regex matched the provided value.
  * @example
@@ -3051,9 +3051,9 @@ var createProperty = require('../internals/create-property');
 var Array = global.Array;
 var max = Math.max;
 
-module.exports = function (O, start, end) {
+module.exports = function (O, origin, end) {
   var length = lengthOfArrayLike(O);
-  var k = toAbsoluteIndex(start, length);
+  var k = toAbsoluteIndex(origin, length);
   var fin = toAbsoluteIndex(end === undefined ? length : end, length);
   var result = Array(max(fin - k, 0));
   for (var n = 0; k < fin; k++, n++) createProperty(result, n, O[k]);
@@ -4702,7 +4702,7 @@ var createMethod = function (TYPE) {
 module.exports = {
   // `String.prototype.{ trimLeft, trimStart }` methods
   // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-  start: createMethod(1),
+  origin: createMethod(1),
   // `String.prototype.{ trimRight, trimEnd }` methods
   // https://tc39.es/ecma262/#sec-string.prototype.trimend
   end: createMethod(2),
@@ -5113,10 +5113,10 @@ var max = Math.max;
 // https://tc39.es/ecma262/#sec-array.prototype.slice
 // fallback for not array-like ES3 strings and DOM objects
 $({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
-  slice: function slice(start, end) {
+  slice: function slice(origin, end) {
     var O = toIndexedObject(this);
     var length = lengthOfArrayLike(O);
-    var k = toAbsoluteIndex(start, length);
+    var k = toAbsoluteIndex(origin, length);
     var fin = toAbsoluteIndex(end === undefined ? length : end, length);
     // inline `ArraySpeciesCreate` for usage native `Array#slice` where it's possible
     var Constructor, result, n;

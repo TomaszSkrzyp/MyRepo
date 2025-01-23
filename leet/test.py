@@ -1,38 +1,35 @@
-def print_route_parameters(distance, duration):
-    """Prints distance and duration in a user-friendly format on one line.
-
-    Args:
-        distance: Distance in kilometers.
-        duration: Duration in seconds.
-    """
-
-    remaining_time = duration
-    time_measures = []
-    time_measures_displayed=0
-    if (remaining_time>=86400) & (time_measures_displayed<2):  # 1 day = 86400 seconds
-        days = remaining_time // 86400
-        time_measures.append(f"{days} {'day' if days == 1 else 'days'}")
-        remaining_time %= 86400
-        time_measures_displayed+=1
-
-    if (remaining_time>= 3600) & (time_measures_displayed<2):  # 1 hour = 3600 seconds
-        hours = remaining_time // 3600
-        time_measures.append(f"{hours} {'hour' if hours == 1 else 'hours'}")
-        remaining_time %= 3600
-        
-        time_measures_displayed+=1
-
-    if (remaining_time>= 60) & (time_measures_displayed<2):  # 1 minute = 60 seconds
-        minutes = remaining_time // 60
-        time_measures.append(f"{minutes} {'minute' if minutes == 1 else 'minutes'}")
-        remaining_time %= 60
-        
-        time_measures_displayed+=1
-
-    if (remaining_time>0) & (time_measures_displayed<1):
-        time_measures.append("1 minute")
+import requests
+from bs4 import BeautifulSoup
+brands = ["circle-k-statoil","amic","lotos","lotos-optima","bp","moya", "auchan", "tesco", "carrefour","olkop","leclerc","intermarche","pieprzyk","huzar","total"]
+for brand_name in brands:
+    url="https://www.autocentrum.pl/stacje-paliw/"+brand_name
+    print(url)
+    response = requests.get(url)
+    #Initialize BeautifulSoup
+    soup = BeautifulSoup(response.text, 'html.parser')
+    diesel_price=0; lpg_price=0; pb95_price=0; pb98_price=0
+    # Find all station items
+    for fuel in soup.find_all('div', class_='last-prices-wrapper'):
+        fuel_type = fuel.find('div', class_='fuel-logo').text.strip()
+        print(fuel_type)
+        if fuel_type=="pb" :
             
-        time_measures_displayed+=1
-
-    print(f"Distance of this route: {round(distance)} kilometers, Duration: {' '.join(time_measures)}")
-print_route_parameters(4000,1740234)
+            price_element = fuel.find('div', class_='price-wrapper').text.split()[0]
+            pb95_price=price_element
+        elif fuel_type=="pb+":
+            price_element = fuel.find('div', class_='price-wrapper').text.split()[0]
+            pb98_price=price_element
+        elif fuel_type=="on" or fuel_type=="on+":
+            if fuel_type=="on+" and diesel_price!=0:#not taking on+ price if on price is available
+                pass
+            else:
+                price_element = fuel.find('div', class_='price-wrapper').text.split()[0]
+                diesel_price=price_element
+        elif fuel_type=="lpg" or fuel_type=="lpg+" :
+            if fuel_type=="lpg+" and lpg_price!=0:#not taking lpg+ price if lpg price is available
+                pass
+            else:
+                price_element = fuel.find('div', class_='price-wrapper').text.split()[0]
+                lpg_price=price_element
+    print(diesel_price,lpg_price,pb95_price,pb98_price)
+       

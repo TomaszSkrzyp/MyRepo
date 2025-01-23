@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle History</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'entry/trip_history.css' %}">
+    <link rel="stylesheet" href="{% static 'entry/trip_historyV2.css' %}">
 </head>
 <body>
     <div class="container">
@@ -24,12 +24,17 @@
             <tbody>
                 {% for vehicle in vehicles %}
                 <tr>
-                    <td>{% if vehicle.fuel_type == 'P' %}
-                            PB95
+                    <td>
+                        {% if vehicle.fuel_type == 'PB95' %}
+                        PB95
+                        {% elif vehicle.fuel_type == 'PB98' %}
+                        PB98
+                        {% elif vehicle.fuel_type == 'LPG' %}
+                        LPG
                         {% elif vehicle.fuel_type == 'D' %}
-                            Diesel
+                        Diesel
                         {% else %}
-                            Unknown
+                        Unknown
                         {% endif %}
                     </td>
 

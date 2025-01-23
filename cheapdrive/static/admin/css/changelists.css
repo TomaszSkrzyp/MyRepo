@@ -2,7 +2,7 @@
 
 #changelist {
     display: flex;
-    align-items: flex-start;
+    align-items: flex-origin;
     justify-content: space-between;
 }
 

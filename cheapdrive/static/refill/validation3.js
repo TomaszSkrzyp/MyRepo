@@ -101,8 +101,8 @@ function validateFuelAmount(fuelInputType, curFuel, curFuelPercentage,tankSize) 
 
 function validateForm() {
     // Get form data using IDs that match your Django form field IDs.
-    const startingAddress = document.getElementById('id_starting_address').value;
-    const finishingAddress = document.getElementById('id_finishing_address').value;
+    const startingAddress = document.getElementById('id_origin_address').value;
+    const finishingAddress = document.getElementById('id_destination_address').value;
     const tankSize = document.getElementById('id_tank_size').value;
     const fuelType = document.getElementById('id_fuel_type').value;
     const currency = document.getElementById('id_currency').value;

@@ -6,39 +6,19 @@ from django.core.exceptions import ValidationError
 from entry.models import User
 from django.contrib import messages
 
-class Trip(models.Model):
-    
-    
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
-    guest_session_id = models.CharField(max_length=255, null=True, blank=True)
-    starting_address = models.CharField(max_length=255)
-    finishing_address = models.CharField(max_length=255)
-    distance = models.DecimalField(
-        max_digits=5, 
-        decimal_places=1, 
-        validators=[MinValueValidator(0.0)],
-        help_text="Distance of trip"
-    )
-    duration = models.DecimalField(
-        
-        max_digits=5, 
-        decimal_places=1, 
-        validators=[MinValueValidator(0.0)],
-        help_text="Duration of the trip - in minutes"
-    )
-    
-    
 class Vehicle_data(models.Model):
     """
     Represents a user's vehicle with information about its fuel type, tank size,
     current fuel level, fuel consumption, purchase price, and currency.
     """
     
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, null=True, blank=True, related_name='vehicle_data')
+    
     fuel_types = {
         "D": "Diesel",
-        "P": "Pb95"
+        "PB95": "PB95",
+        "LPG": "LPG",
+        "PB98":"PB95"
     }
     class Meta:
         constraints = [
@@ -54,7 +34,7 @@ class Vehicle_data(models.Model):
         help_text="The size of the vehicle's fuel tank in liters."
     )
     fuel_type = models.CharField(
-        max_length=3, 
+        max_length=4, 
         choices=fuel_types,
         help_text="The type of fuel used by the vehicle."
     )
@@ -81,13 +61,7 @@ class Vehicle_data(models.Model):
         default='PLN',
         help_text="The currency of the purchase price."
     )
-    trip_price=models.DecimalField(
-        max_digits=7, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0.0)],
-        help_text="Price of the trip",
-        default=0
-    )
+    
     def need_refill(self, distance):
         """
         Checks if the vehicle needs a refill based on distance and fuel consumption.
@@ -120,6 +94,133 @@ class Vehicle_data(models.Model):
     )
 
     
+
+
+class TripNode(models.Model):
+    origin_address = models.CharField(max_length=255)
+    destination_address = models.CharField(max_length=255)
+    distance = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
+        validators=[MinValueValidator(0.0)],
+        help_text="Distance of trip"
+    )
+    duration = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
+        validators=[MinValueValidator(0.0)],
+        help_text="Duration of the trip - in minutes"
+    )
+    currency = models.CharField(
+        max_length=3,
+        default='PLN',
+        help_text="The currency of the purchase price."
+    )
+    trip_price = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[MinValueValidator(0.0)],
+        help_text="Price of the trip",
+        default=0
+    )
+    next_trip = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='previous_node',
+        help_text="Next trip node"
+    )
+
+    def delete(self, *args, **kwargs):
+        # Update the previous node's next_trip to null before deleting this node
+        if self.previous_node.exists():
+            self.previous_node.update(next_trip=None)
+        super().delete(*args, **kwargs)
+
+
+class Trip(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    guest_session_id = models.CharField(max_length=255, null=True, blank=True)
+    vehicle = models.ForeignKey(Vehicle_data, on_delete=models.CASCADE, null=True, blank=True, related_name='trip')
+    refill_price=models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[MinValueValidator(0.0)],
+        help_text="Price of fuel bought on trip",
+        default=0
+    )
+    refill_number=models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[MinValueValidator(0.0)],
+        help_text="Litres of gas refilled during trip",
+        default=0
+    )
+    first_trip_node = models.ForeignKey(
+        TripNode,
+        on_delete=models.CASCADE,  # Cascade deletes all trip nodes starting from this
+        default=None,
+        related_name='trips',
+        help_text="First trip node in this trip"
+    )
+    def clean(self):
+        """Ensure data integrity: Every Trip must have a first_trip_node."""
+        if not self.first_trip_node:
+            raise ValidationError("A trip must have at least one trip node as its starting point.")
+        
+    
+    def main_currency(self):
+        return self.first_trip_node.currency
+    
+    def total_distance(self):
+        """Calculate the total distance of the trip."""
+        distance = 0
+        current_node = self.first_trip_node
+        while current_node:
+            distance += current_node.distance
+            current_node = current_node.next_trip
+        return distance
+
+    def total_duration(self):
+        """Calculate the total duration of the trip."""
+        duration = 0
+        current_node = self.first_trip_node
+        while current_node:
+            duration += current_node.duration
+            current_node = current_node.next_trip
+        return duration
+
+    def total_price(self):#TO CHANGE- przeliczenie walut
+        """Calculate the total price of the trip."""
+        price = 0
+        current_node = self.first_trip_node
+        while current_node:
+            price += current_node.trip_price
+            current_node = current_node.next_trip
+        return price
+
+    def origin_address(self):
+        """Retrieve the starting address of the trip."""
+        if self.first_trip_node:
+            return self.first_trip_node.origin_address
+        return None
+
+    def destination_address(self):
+        """Retrieve the finishing address of the trip."""
+        current_node = self.first_trip_node
+        if not current_node:
+            return None
+        while current_node.next_trip:
+            current_node = current_node.next_trip
+        return current_node.destination_address
+
+    def save(self, *args, **kwargs):
+        """Override save to ensure clean method is called."""
+        self.clean()
+        super().save(*args, **kwargs)
+
+
 
 
     
