@@ -3,8 +3,12 @@ from importlib.metadata import requires
 from django.db import models
 from django.core.validators import MinValueValidator,MaxValueValidator
 from django.core.exceptions import ValidationError
+from django.db.models import BooleanField
 from entry.models import User
 from django.contrib import messages
+
+
+from django.contrib.gis.db import models as gis_models
 
 
 class Vehicle_data(models.Model):
@@ -18,15 +22,9 @@ class Vehicle_data(models.Model):
         "D": "Diesel",
         "PB95": "PB95",
         "LPG": "LPG",
-        "PB98":"PB95"
+        "PB98":"PB98"
     }
-    class Meta:
-        constraints = [
-        models.CheckConstraint(
-            name="cur_fuel_lte_tank_size",
-            check=models.Q(cur_fuel__lte=models.F("tank_size")),
-        )
-    ]
+    
     tank_size = models.DecimalField(
         max_digits=5, 
         decimal_places=2, 
@@ -38,50 +36,22 @@ class Vehicle_data(models.Model):
         choices=fuel_types,
         help_text="The type of fuel used by the vehicle."
     )
-    cur_fuel = models.DecimalField(
-        max_digits=5, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0.0)],
-        help_text="The current amount of fuel in the tank in liters."
-    )
+    
     fuel_consumption_per_100km = models.DecimalField(
         max_digits=5, 
         decimal_places=2, 
         validators=[MinValueValidator(0.0)],
-        help_text="The vehicle's fuel consumption in liters per kilometer."
+        help_text="The vehicle's fuel consumption in liters per 100 kilometer."
     )
-    price_of_fuel = models.DecimalField(
-        max_digits=6, 
-        decimal_places=2, 
-        validators=[MinValueValidator(0.0)],
-        help_text="The price the stored gas was purchased for."
-    )
-    currency = models.CharField(
-        max_length=3, 
-        default='PLN',
-        help_text="The currency of the purchase price."
+    need_refill=BooleanField(
+        null=True, 
+        blank=True,
+        
+        help_text="Information wheter the vehicle needs refill."
     )
     
-    def need_refill(self, distance):
-        """
-        Checks if the vehicle needs a refill based on distance and fuel consumption.
-
-        Args:
-            distance: The distance to be traveled.
-
-        Returns:
-            True if a refill is needed, False otherwise.  Returns True if fuel consumption is invalid.
-        """
-        if self.fuel_consumption_per_100km <= 0:
-            return True #Invalid Fuel Consumption
-
-        fuel_needed = (self.fuel_consumption_per_100km * distance) / 100
-
-        #Check for negative fuel values (Should be prevented in data validation)
-        if self.cur_fuel < 0 or self.tank_size < 0:
-            return True # Invalid fuel data
-
-        return self.cur_fuel - fuel_needed < 0.1 * float(self.tank_size)
+    
+    
     
      # Optional relationship with User model, allowing guest users to not have this field set
     user = models.ForeignKey(
@@ -97,8 +67,17 @@ class Vehicle_data(models.Model):
 
 
 class TripNode(models.Model):
-    origin_address = models.CharField(max_length=255)
-    destination_address = models.CharField(max_length=255)
+    origin=gis_models.PointField(
+        geography=True,
+        blank=True,
+        null=True
+    )
+    destination=gis_models.PointField(
+        geography=True,
+        blank=True,
+        null=True
+    )
+    
     distance = models.DecimalField(
         max_digits=5,
         decimal_places=1,
@@ -116,12 +95,21 @@ class TripNode(models.Model):
         default='PLN',
         help_text="The currency of the purchase price."
     )
-    trip_price = models.DecimalField(
-        max_digits=7,
+    bought_gas_price = models.DecimalField(
+        max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(0.0)],
-        help_text="Price of the trip",
-        default=0
+        help_text="Price of bought fuel at the beginning of node. Per liter",
+        blank=True,
+        null=True,
+    )
+    fuel_refilled=models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
+        validators=[MinValueValidator(0.0)],
+        blank=True,
+        null=True,
+        help_text="Fuel added at the beggining of the node"
     )
     next_trip = models.ForeignKey(
         'self',
@@ -136,6 +124,8 @@ class TripNode(models.Model):
         # Update the previous node's next_trip to null before deleting this node
         if self.previous_node.exists():
             self.previous_node.update(next_trip=None)
+
+
         super().delete(*args, **kwargs)
 
 
@@ -143,20 +133,12 @@ class Trip(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     guest_session_id = models.CharField(max_length=255, null=True, blank=True)
     vehicle = models.ForeignKey(Vehicle_data, on_delete=models.CASCADE, null=True, blank=True, related_name='trip')
-    refill_price=models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        validators=[MinValueValidator(0.0)],
-        help_text="Price of fuel bought on trip",
-        default=0
-    )
-    refill_number=models.DecimalField(
-        max_digits=7,
-        decimal_places=2,
-        validators=[MinValueValidator(0.0)],
-        help_text="Litres of gas refilled during trip",
-        default=0
-    )
+    
+    origin_address = models.CharField(max_length=255, blank=True)
+    destination_address = models.CharField(max_length=255, blank=True)
+
+   
+    
     first_trip_node = models.ForeignKey(
         TripNode,
         on_delete=models.CASCADE,  # Cascade deletes all trip nodes starting from this
@@ -191,30 +173,32 @@ class Trip(models.Model):
             current_node = current_node.next_trip
         return duration
 
-    def total_price(self):#TO CHANGE- przeliczenie walut
+    def total_price_bought_and_used(self):#TO CHANGE- przeliczenie walut
         """Calculate the total price of the trip."""
-        price = 0
+        price_used = 0
         current_node = self.first_trip_node
-        while current_node:
-            price += current_node.trip_price
-            current_node = current_node.next_trip
-        return price
-
-    def origin_address(self):
-        """Retrieve the starting address of the trip."""
-        if self.first_trip_node:
-            return self.first_trip_node.origin_address
-        return None
-
-    def destination_address(self):
-        """Retrieve the finishing address of the trip."""
-        current_node = self.first_trip_node
-        if not current_node:
-            return None
+        price_bought=-current_node.bought_gas_price*current_node.fuel_refilled
         while current_node.next_trip:
+            price_used += current_node.bought_gas_price*current_node.fuel_refilled
             current_node = current_node.next_trip
-        return current_node.destination_address
+        price_bought+=price_used+current_node.bought_gas_price*current_node.fuel_refilled
+        price_used += current_node.distance * self.vehicle.fuel_consumption_per_100km / 100 * current_node.bought_gas_price
 
+        return (round(price_bought,2),round(price_used))
+    
+    def fuel_left(self):
+        """Calculate fuel left after the trip."""
+        all_fuel_refilled=0
+        current_node = self.first_trip_node
+        
+        while current_node.next_trip:
+            all_fuel_refilled+=current_node.fuel_refilled
+            current_node = current_node.next_trip
+        return all_fuel_refilled+current_node.fuel_refilled-current_node.distance*self.vehicle.fuel_consumption_per_100km/100
+        
+        
+
+   
     def save(self, *args, **kwargs):
         """Override save to ensure clean method is called."""
         self.clean()

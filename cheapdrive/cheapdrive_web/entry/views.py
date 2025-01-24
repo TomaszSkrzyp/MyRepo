@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 
-
+from refill.models import Trip,TripNode,Vehicle_data
 
 from .forms import UserRegistrationForm  
 from django.urls import reverse
@@ -31,6 +31,10 @@ def register(request):
 
 def visit(request):
     #update_brand_prices();update_station_objects()
+    deleted_count1, _ = Trip.objects.all().delete()
+    deleted_count2, _ = TripNode.objects.all().delete()
+    deleted_count3, _ = Vehicle_data.objects.all().delete()
+    
     return render(request, 'entry/visit.html')
 
 
@@ -115,15 +119,15 @@ def trip_history_view(request):
     for trip in trips:
         vehicle = trip.vehicle
         total_distance=trip.total_distance()
-        refill_needed = vehicle.need_refill(total_distance) if total_distance else False
+        refill_needed = vehicle.need_refill 
             
         
         trip_data.append({
-            'origin_address':trip.origin_address(),
-            'destination_address':trip.destination_address(),
+            'origin_address':trip.origin_address,
+            'destination_address':trip.destination_address,
             'total_distance':total_distance,
             'total_duration':trip.total_duration(),
-            'total_price':trip.total_price(),
+            'total_price':trip.total_price_bought_and_used()[0],
             'currency':trip.main_currency(),
             'trip_id':trip.id,
         })

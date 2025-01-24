@@ -11,9 +11,9 @@ def address_validation_and_distance(origin,destination):
         raise ValueError("GOOGLE_API_KEY environment variable not set.")
 
     gmaps = googlemaps.Client(key=api_key)
-    #element = gmaps.distance_matrix( origins=origin,destinations=destination,mode="driving", )
-    element={'destination_addresses': ['Gdansk poland'], 'origin_addresses': ['Kaluzy 27a, 40-750 Katowice, Poland'], 
-             'rows': [{'elements': [{'distance': {'text': '548 km', 'value': 548428}, 'duration': {'text': '5 hours 12 mins', 'value': 11506}, 'status': 'OK'}]}], 'status': 'OK'} 
+    element = gmaps.distance_matrix( origins=origin,destinations=destination,mode="driving", )
+    #element={'destination_addresses': ['Gdansk poland'], 'origin_addresses': ['Kaluzy 27a, 40-750 Katowice, Poland'], 
+             #'rows': [{'elements': [{'distance': {'text': '548 km', 'value': 548428}, 'duration': {'text': '5 hours 12 mins', 'value': 11506}, 'status': 'OK'}]}], 'status': 'OK'} 
     origin,destination=element["origin_addresses"][0],element["destination_addresses"][0]  
   
     if element['rows'][0]['elements'][0]["status"] == 'OK':

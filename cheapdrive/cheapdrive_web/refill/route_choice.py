@@ -31,13 +31,11 @@ def get_ptp_distance(origin,destination, origin_coords,destination_coords):
         return distance_gmaps(origin or origin_coords, destination or destination_coords)
     
 import time    
-def determinate_best_route(origin,routes,destination,price_of_fuel):
+def determinate_best_route(origin_coords,destination_coords,origin,routes,destination,price_of_fuel):
     def compute_route_params(origin, stations, destination):
         for i in stations:
             print(str(i.id)+", ")
         duration_list=[]
-        origin_coords = get_coordinates(origin)
-        destination_coords = get_coordinates(destination)
         #Prepare station coordinates list for parallel processing
         station_coords = [(stations[i].location.y, stations[i].location.x) for i in range(len(stations))]
         

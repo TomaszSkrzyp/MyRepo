@@ -77,9 +77,7 @@ def load_data(request):
                 guest_id = request.session.session_key if request.user.is_authenticated else None
                 
 
-
-
-                vehicle_id = create_vehicle(tank_size, fuel_type, cur_fuel, fuel_consumption_per_100km, price_of_fuel, currency)    
+                vehicle_id = create_vehicle(tank_size, fuel_type, fuel_consumption_per_100km)    
                 vehicle = Vehicle_data.objects.get(id=vehicle_id)  # Retrieve the created Vehicle object  
                 if not vehicle_id:
                     
@@ -93,7 +91,7 @@ def load_data(request):
                      })
                 
 
-                trip_id = create_trip(origin_address, destination_address,currency, user, guest_id,vehicle_id)
+                trip_id = create_trip(origin_address, destination_address,currency, user, guest_id,vehicle_id,cur_fuel,price_of_fuel)
                 trip = Trip.objects.get(id=trip_id)  # Retrieve the created Trip object
                 if not trip_id:
                    
@@ -110,10 +108,16 @@ def load_data(request):
                 if request.user.is_authenticated:
                       vehicle.user = request.user
                       vehicle.save()
-                request.session['allowed_to_access_refill_views'] = True
-                if vehicle.need_refill(trip.total_distance()):
+                safety_coeff=0.1
+                print(trip.fuel_left())
+                print(trip.total_price_bought_and_used())
+                if need_refill(trip.fuel_left(),safety_coeff,float(vehicle.tank_size)):
+                    vehicle.need_refill=True;
+                    vehicle.save()
                     messages.error(request, "Need some juice")
                     return redirect(f"{reverse('refill:refill_management')}?vehicle_id={vehicle_id}&trip_id={trip_id}")
+                
+                request.session['allowed_to_access_refill_views'] = True
                 return redirect(f"{reverse('refill:results')}?vehicle_id={vehicle_id}&trip_id={trip_id}")
 
             except ValidationError as e:
@@ -154,16 +158,14 @@ def load_data(request):
             'vehicle_id': vehicle.id if vehicle else None,
             'trip_id': trip.id if trip else None,
             'form': form,
-        })
-
-
+        }
+        )
+def need_refill(fuel_left,safety_coeff,tank_size):
+    return fuel_left<=safety_coeff*tank_size
 
 def refill_management(request):
-    if not request.session.get('allowed_to_access_refill_views', True):
-        messages.error(request, "You are not authorized to access this page.")
-        return redirect(reverse('entry:load_data'))
     
-    request.session['allowed_to_access_refill_views'] = False
+    
 
     # Extract and validate query parameters
     try:
@@ -171,8 +173,8 @@ def refill_management(request):
     except (KeyError, TypeError) as e:
         messages.error(request, f"Invalid query parameters: {e}")
         logger.exception("Error in query parameters")
-        request.session['allowed_to_access_refill_views'] = True
-        return redirect(reverse('entry:load_data'))
+        request.session['allowed_to_access_refill_views'] = False
+        return redirect('refill:load_data?vehicle_id={vehicle_id}&trip_id={trip_id}')
 
     # Fetch trip and vehicle details
     trip = get_object_or_404(Trip, id=trip_id) if trip_id else None
@@ -180,16 +182,16 @@ def refill_management(request):
 
     if not trip or not vehicle:
         messages.error(request, "Trip or vehicle not found.")
-        request.session['allowed_to_access_refill_views'] = True
-        return redirect(reverse('entry:load_data'))
+        request.session['allowed_to_access_refill_views'] = False
+        return redirect('refill:load_data?vehicle_id={vehicle_id}&trip_id={trip_id}')
 
     # Estimate driving ranges
-    est_drive_range =float( vehicle.cur_fuel / vehicle.fuel_consumption_per_100km * 100)
+    est_drive_range =float( trip.first_trip_node.fuel_refilled / vehicle.fuel_consumption_per_100km * 100)
     full_tank_range = float(vehicle.tank_size / vehicle.fuel_consumption_per_100km * 100)
 
     # Get coordinates for trip origin and destination
-    origin_coords = get_coordinates(trip.origin_address())
-    destination_coords = get_coordinates(trip.destination_address())
+    origin_coords = get_coordinates(trip.origin_address)
+    destination_coords = get_coordinates(trip.destination_address)
 
     # Find best gas station routes
     best_station_routes = find_best_gas_stations(
@@ -204,7 +206,7 @@ def refill_management(request):
 
     # Determine best route (time vs. distance)
     best_route_by_time, best_route_by_distance = determinate_best_route(
-        trip.origin_address(), best_station_routes, trip.destination_address(), vehicle.price_of_fuel
+        origin_coords,destination_coords,trip.origin_address, best_station_routes, trip.destination_address, trip.first_trip_node.bought_gas_price
     )
     print(best_route_by_time,best_route_by_distance)
     request.session['best_route_by_time'] = best_route_by_time
@@ -228,7 +230,7 @@ def choose_option(request):
     best_route_by_distance = request.session.get('best_route_by_distance')
     # Summing and printing distances and durations
     if not best_route_by_time or not best_route_by_distance:
-        return redirect(reverse('entry:load_data'))
+        return redirect('refill:load_data?vehicle_id={vehicle_id}&trip_id={trip_id}')
     total_duration_by_distance=format_duration(sum(best_route_by_distance['durations']))
     total_duration_by_time=format_duration( sum(best_route_by_time['durations']))
     total_distance_by_distance=sum(best_route_by_distance['distances'])
@@ -246,9 +248,8 @@ def choose_option(request):
             selected_route = best_route_by_time
         else:
             selected_route = best_route_by_distance
-
-        # Store the user's choice and redirect to results
         request.session['selected_route'] = selected_route
+        # Store the user's choice and redirect to results
         return redirect(f"{reverse('refill:refill_amount')}?vehicle_id={vehicle_id}&trip_id={trip_id}")
         
     return render(request, 'refill/choose_option.html', {
@@ -259,6 +260,7 @@ def choose_option(request):
     })
 
 def update_trip(trip_id,vehicle_id,fuel_quantity,selected_route):
+    
     print("yolo")
     
 def refill_amount(request):
@@ -267,21 +269,22 @@ def refill_amount(request):
     selected_route = request.session.get('selected_route')
     if vehicle_id:
         vehicle = get_object_or_404(Vehicle_data, id=vehicle_id)
-    min_fuel=selected_route['distances'][-1]*float(vehicle.fuel_consumption_per_100km)/100
-    max_fuel=float(vehicle.tank_size)
+    min_fuel = round(selected_route['distances'][-1] * float(vehicle.fuel_consumption_per_100km) / 100, 2)
+    max_fuel = round(float(vehicle.tank_size), 2)
     if not selected_route:
-        return redirect(reverse('entry:load_data'))
+        return redirect(reverse('refill:load_data?vehicle_id={vehicle_id}&trip_id={trip_id}'))
 
     if request.method == 'POST':
-        fuel_quantity = request.POST.get('fuel_quantity')
-        if fuel_quantity and fuel_quantity.isdigit():
+        fuel_quantity = float(request.POST.get('fuel_quantity'))
+        if fuel_quantity and fuel_quantity>min_fuel and fuel_quantity<max_fuel:
+        
             # Process the fuel refill amount (e.g., store in session or database)
             update_trip(trip_id,vehicle_id,fuel_quantity,selected_route)
             request.session['allowed_to_access_refill_views'] = True
             return redirect(f"{reverse('refill:results')}?vehicle_id={vehicle_id}&trip_id={trip_id}")
         else:
-            error_message = "Please enter a valid fuel amount."
-            return render(request, 'refill/fuel_amount.html', {'error_message': error_message})
+            messages.error(request, f"Invalid fuel quantity")
+            return render(request, 'refill/fuel_amount.html')
     
     return render(request, 'refill/fuel_amount.html', {
         'vehicle_id': vehicle_id,
@@ -320,25 +323,21 @@ def results(request):
     if vehicle_id:
         vehicle = get_object_or_404(Vehicle_data, id=vehicle_id)
         
-    cost=trip.total_distance() / (100 / vehicle.fuel_consumption_per_100km) * vehicle.price_of_fuel
-    
-    trip.first_trip_node.trip_price=cost
-    trip.first_trip_node.save()
-    trip.save()
-    total_distance = trip.total_distance()
+    cost_bought,cost_used=trip.total_price_bought_and_used()
+    print(cost_bought,cost_used)
     duration=format_duration( trip.total_duration())
     
         
     
     context = {
-        "cost": f"{cost:.2f} {trip.main_currency()}",
+        "cost_used": f"{cost_used:.2f} {trip.main_currency()}",
         "duration": duration,
-        "distance": f"{total_distance:.2f} km",
-        "origin": trip.origin_address(),
-        "destination": trip.destination_address(),
-        "fuel_left":  f"{trip.refill_number+ vehicle.cur_fuel-vehicle.fuel_consumption_per_100km*total_distance/100:.2f} litres",
-        "needs_refill": vehicle.need_refill(total_distance),
-        "refill_price":  f"{ trip.refill_price:.2f} {trip.main_currency()}",
+        "distance": f"{trip.total_distance():.2f} km",
+        "origin": trip.origin_address,
+        "destination": trip.destination_address,
+        "fuel_left":  f"{trip.fuel_left()} litres",
+        "needs_refill": vehicle.need_refill,
+        "refill_price":  f"{ cost_bought} {trip.main_currency()}",
     }
     
     return render(request, "refill/results.html", context)
